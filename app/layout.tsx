@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { ja } from "@/lib/i18n/ja";
 import "./globals.css";
 import { geist, geistMono, newsreader, notoSansJP, notoSerifJP } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "SOZO Review · 物件ヘルスチェック",
-  description: "Airbnb 物件の健康診断システム",
+  title: ja.app.title,
+  description: ja.app.description,
 };
 
 const fontVars = [geist, geistMono, newsreader, notoSansJP, notoSerifJP]

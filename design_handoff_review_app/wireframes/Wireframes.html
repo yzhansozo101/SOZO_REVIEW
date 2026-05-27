@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1320">
+<title>Wireframes · SOZO Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&family=Kalam:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4EFE3;
+    --paper-2:#EFE8D6;
+    --ink:#1A1A1A;
+    --ink-soft:#4A4843;
+    --ink-mute:#9A9385;
+    --rule:#2A2724;
+    --accent:#C7382B;
+    --good:#2F8F5E;
+    --warn:#D98B1F;
+    --note:#3A6FA8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(0,0,0,.025) 1px, transparent 2px),
+      radial-gradient(circle at 80% 40%, rgba(0,0,0,.02) 1px, transparent 2px),
+      radial-gradient(circle at 50% 80%, rgba(0,0,0,.025) 1px, transparent 2px);
+    background-size: 240px 240px, 320px 320px, 280px 280px;
+    color:var(--ink);
+    font-family:'Patrick Hand','Kalam','Noto Sans JP','Noto Sans SC',sans-serif;
+    font-size:16px;
+    line-height:1.4;
+    padding:48px 32px 96px;
+  }
+  .deck{ max-width:1280px; margin:0 auto; }
+
+  /* ----- Header ----- */
+  .head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:36px;
+  }
+  .head h1{
+    font-family:'Caveat',cursive; font-weight:700; font-size:56px;
+    margin:0; line-height:1; letter-spacing:-.01em;
+  }
+  .head .stamp{
+    font-family:'Caveat',cursive; font-size:22px; transform:rotate(-3deg);
+    border:2px solid var(--accent); color:var(--accent); padding:6px 18px;
+    background:rgba(255,255,255,.4);
+  }
+  .head .sub{ font-family:'Patrick Hand'; font-size:18px; color:var(--ink-soft); margin-top:6px;}
+
+  /* ----- Section ----- */
+  .section{ margin:64px 0 0; }
+  .section-head{ display:flex; align-items:baseline; gap:18px; margin-bottom:18px;}
+  .section-num{
+    font-family:'Caveat',cursive; font-weight:700; font-size:40px; color:var(--accent); line-height:1;
+  }
+  .section-title{
+    font-family:'Caveat',cursive; font-weight:700; font-size:34px; margin:0; line-height:1;
+  }
+  .section-note{
+    font-family:'Patrick Hand'; color:var(--ink-soft); font-size:16px;
+    margin-left:auto; max-width:560px; text-align:right;
+  }
+  .section-rule{ height:1px; background:var(--rule); opacity:.5; margin-bottom:24px; }
+
+  /* ----- Frames ----- */
+  .frames{ display:grid; gap:28px; }
+  .frames.three{ grid-template-columns: repeat(3, 1fr); }
+  .frames.two{ grid-template-columns: repeat(2, 1fr); }
+  .frames.one{ grid-template-columns: 1fr; }
+
+  .frame{
+    background: #FFFCF4;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 22px 22px 28px;
+    position: relative;
+    box-shadow: 4px 5px 0 var(--ink);
+  }
+  .frame.alt{ background:#FFF8E8; }
+  .frame.wide{ grid-column: span 2; }
+  .frame.full{ grid-column: 1 / -1; }
+  .frame .tag{
+    position:absolute; top:-16px; left:18px;
+    font-family:'Caveat',cursive; font-weight:700; font-size:22px;
+    background:var(--ink); color:var(--paper); padding:2px 14px;
+    transform:rotate(-1.5deg);
+  }
+  .frame .pros{
+    position:absolute; top:-14px; right:18px;
+    font-family:'Caveat',cursive; font-size:18px;
+    background:var(--paper); padding:0 8px; color:var(--ink-soft);
+  }
+
+  /* ----- Adopted stamp (selected wireframe directions) ----- */
+  .frame.adopted{
+    border-color: var(--good);
+    box-shadow: 4px 5px 0 var(--good);
+    background:#F4FBF6;
+  }
+  .frame.adopted .stamp-adopted{
+    position:absolute; top:14px; right:14px;
+    transform: rotate(-8deg);
+    font-family:'Caveat',cursive; font-weight:700; font-size:30px;
+    color:var(--good); border:3px double var(--good);
+    padding:4px 16px 2px; line-height:1;
+    background:rgba(255,255,255,.85);
+    letter-spacing:.02em;
+    pointer-events:none;
+    z-index:2;
+  }
+  .frame.adopted .stamp-adopted::after{
+    content:'採用'; display:block;
+    font-family:'Noto Sans JP',sans-serif; font-weight:700; font-size:11px;
+    color:var(--good); letter-spacing:.2em; text-align:center; margin-top:2px;
+  }
+  .section.has-adopted .section-num{ color: var(--good); }
+  .frame-title{
+    font-family:'Caveat',cursive; font-weight:700; font-size:26px;
+    margin:0 0 4px 0; padding-right:120px;
+  }
+  .frame-sub{
+    font-family:'Patrick Hand'; color:var(--ink-soft); margin:0 0 16px 0; font-size:14px;
+  }
+
+  /* device-ish chrome */
+  .chrome{
+    border:2px solid var(--ink); border-radius:4px;
+    background:#FAF6EA;
+    padding:10px 10px 14px;
+    position:relative;
+  }
+  .chrome .topbar{
+    height:18px; display:flex; align-items:center; gap:5px;
+    border-bottom:1px solid var(--ink-mute);
+    margin:-2px -10px 10px; padding:4px 10px 6px;
+  }
+  .chrome .topbar i{ width:8px; height:8px; border:1.5px solid var(--ink); border-radius:50%; }
+  .chrome .topbar u{
+    flex:1; height:12px; border:1.5px solid var(--ink); border-radius:6px; margin-left:8px;
+    background:repeating-linear-gradient(90deg, transparent 0 4px, var(--ink-mute) 4px 5px);
+    text-decoration:none;
+  }
+
+  /* generic boxes */
+  .box{
+    border:2px solid var(--ink); border-radius:4px; padding:10px 12px;
+    background:rgba(255,255,255,.5);
+  }
+  .box.dash{ border-style:dashed; }
+  .box.fill-w{ background:rgba(0,0,0,.04); }
+  .box.fill-y{ background:rgba(217,139,31,.18); }
+  .box.fill-g{ background:rgba(47,143,94,.18); }
+  .box.fill-r{ background:rgba(199,56,43,.16); }
+  .lab{ font-family:'Caveat',cursive; font-weight:700; font-size:18px; }
+  .lab-sm{ font-family:'Caveat',cursive; font-size:14px; color:var(--ink-soft); }
+  .row{ display:flex; gap:8px; }
+  .col{ display:flex; flex-direction:column; gap:8px; }
+  .stack-sm{ display:flex; flex-direction:column; gap:6px; }
+  .gap-12{ gap:12px; }
+
+  /* annotation arrows / labels (positioned floats on frame) */
+  .anno{
+    position:absolute;
+    font-family:'Caveat',cursive; font-weight:700; font-size:17px;
+    color:var(--note); max-width:160px; line-height:1.15;
+  }
+  .anno.right{ left:calc(100% + 10px); }
+  .anno svg{ position:absolute; }
+
+  /* score letter */
+  .letter{
+    font-family:'Caveat',cursive; font-weight:700; font-size:108px; line-height:.85;
+    letter-spacing:-.04em;
+  }
+  .letter.sm{ font-size:64px; }
+  .letter.xs{ font-size:42px; }
+  .num-big{ font-family:'Kalam'; font-weight:700; font-size:28px; }
+  .stat{ font-family:'Kalam'; font-weight:700; font-size:20px; }
+
+  /* hand-drawn line generator for divider feel */
+  .squiggle{ display:block; width:100%; height:8px; }
+
+  /* utility */
+  .center{ display:flex; align-items:center; justify-content:center;}
+  .between{ display:flex; align-items:center; justify-content:space-between; }
+  .grow{ flex:1; }
+  .mt-8{ margin-top:8px } .mt-12{ margin-top:12px } .mt-16{ margin-top:16px } .mt-24{ margin-top:24px }
+  .mb-8{ margin-bottom:8px } .mb-12{ margin-bottom:12px } .mb-16{ margin-bottom:16px }
+  .text-mute{ color:var(--ink-soft); }
+  .text-accent{ color:var(--accent); }
+  .text-good{ color:var(--good); }
+  .text-warn{ color:var(--warn); }
+  .tiny{ font-size:13px; font-family:'Patrick Hand'; color:var(--ink-soft);}
+  .ja{ font-family:'Noto Sans JP','Patrick Hand',sans-serif; }
+
+  /* 8-step ladder */
+  .ladder{ display:grid; grid-template-columns:repeat(8,1fr); gap:4px; }
+  .ladder .step{
+    border:1.5px solid var(--ink); border-radius:3px; padding:6px 2px;
+    font-size:12px; text-align:center; font-family:'Patrick Hand';
+    background:rgba(255,255,255,.5);
+  }
+  .ladder .step.active{ background:rgba(217,139,31,.4); border-width:2.5px; }
+
+  /* dim grid */
+  .dim-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .dim-card{
+    border:2px solid var(--ink); border-radius:4px; padding:8px;
+    background:rgba(255,255,255,.55); min-height:90px; display:flex; flex-direction:column; gap:4px;
+  }
+  .dim-card .gh{ display:flex; align-items:center; justify-content:space-between; font-size:14px; }
+  .dim-card .v{ font-family:'Kalam'; font-weight:700; font-size:20px; }
+
+  /* trend mini */
+  .trend{ border:1.5px solid var(--ink); border-radius:4px; padding:8px; background:rgba(255,255,255,.5); height:90px; position:relative;}
+  .trend svg{ width:100%; height:100%; }
+
+  /* legend at bottom */
+  .legend{
+    margin-top:80px; border-top:2px dashed var(--ink-mute); padding-top:20px;
+    display:flex; gap:32px; flex-wrap:wrap; font-family:'Patrick Hand'; color:var(--ink-soft); font-size:14px;
+  }
+  .legend i{ display:inline-block; width:14px; height:14px; vertical-align:middle; margin-right:6px; border:1.5px solid var(--ink);}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ========== HEAD ========== -->
+  <header class="head">
+    <div>
+      <h1>SOZO Review · Wireframes</h1>
+      <div class="sub">v0.2 spec + 流程图 · 低保真结构探索 · 2026-05-27 · <b style="color:var(--good);">4 directions adopted</b></div>
+    </div>
+    <div class="stamp" style="border-color:var(--good); color:var(--good);">SELECTED — 1C / 2B / 3A / 4B</div>
+  </header>
+
+  <!-- ========== SECTION 1: INPUT ========== -->
+  <section class="section has-adopted">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <h2 class="section-title">入口 · 输入 URL</h2>
+      <div class="section-note">起点。「30 秒判断」的承诺要从这里就能感觉到。<br/>试三种重心：单字段、单字段+示例、单字段+历史。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames three">
+
+      <!-- 1A -->
+      <div class="frame">
+        <span class="tag">1A</span>
+        <span class="pros">极简</span>
+        <h3 class="frame-title">单一焦点</h3>
+        <p class="frame-sub">屏幕中央只有一行输入 + 按钮。没有别的东西打扰。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:48px 18px 64px; text-align:center;">
+            <div class="lab" style="font-size:26px; margin-bottom:8px;" lang="ja">物件ヘルスチェック</div>
+            <div class="tiny" style="margin-bottom:36px;">Airbnb URL を貼り付け · 30 秒で診断</div>
+            <div class="row" style="gap:6px;">
+              <div class="box dash grow" style="padding:14px;"><span class="lab-sm">🔗  https://airbnb.com/rooms/__________</span></div>
+              <div class="box" style="background:var(--ink); color:var(--paper); padding:14px 22px;"><span class="lab">診断</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1B -->
+      <div class="frame alt">
+        <span class="tag">1B</span>
+        <span class="pros">示例引导</span>
+        <h3 class="frame-title">URL + 示例链接</h3>
+        <p class="frame-sub">下方放一个 "试试样例" 按钮，老板演示时一键填入。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:36px 18px 56px;">
+            <div class="lab" style="font-size:24px; margin-bottom:6px;" lang="ja">物件ヘルスチェック</div>
+            <div class="tiny" style="margin-bottom:20px;">5項目 · AIレポート · 60点未満で自動アラート</div>
+            <div class="row" style="gap:6px; margin-bottom:10px;">
+              <div class="box dash grow" style="padding:12px;"><span class="lab-sm">🔗  URL ____________________</span></div>
+              <div class="box" style="background:var(--ink); color:var(--paper); padding:12px 18px;"><span class="lab">診断</span></div>
+            </div>
+            <div class="row" style="gap:14px;">
+              <div class="lab-sm">→ サンプルURLを試す</div>
+              <div class="lab-sm">→ 前回の診断を見る</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1C -->
+      <div class="frame adopted">
+        <span class="tag">1C</span>
+        <span class="pros">最近列表</span>
+        <span class="stamp-adopted">ADOPTED</span>
+        <h3 class="frame-title">URL + 最近</h3>
+        <p class="frame-sub">输入栏下方显示最近诊断过的 3-5 个房源，方便复诊。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:24px 18px 30px;">
+            <div class="lab" style="font-size:22px; margin-bottom:4px;" lang="ja">物件ヘルスチェック</div>
+            <div class="tiny" style="margin-bottom:14px;">URL を貼り付け or 履歴から選択</div>
+            <div class="row" style="gap:6px; margin-bottom:18px;">
+              <div class="box dash grow" style="padding:10px;"><span class="lab-sm">🔗  URL _____________</span></div>
+              <div class="box" style="background:var(--ink); color:var(--paper); padding:10px 16px;"><span class="lab-sm">診断</span></div>
+            </div>
+            <div class="tiny" style="margin-bottom:6px;">最近の診断</div>
+            <div class="col" style="gap:5px;">
+              <div class="box" style="padding:6px 10px; display:flex; justify-content:space-between;"><span class="lab-sm" lang="ja">近藤の家·新宿2BR</span><span class="lab-sm text-warn">B · 78</span></div>
+              <div class="box" style="padding:6px 10px; display:flex; justify-content:space-between;"><span class="lab-sm" lang="ja">浅草スタジオ</span><span class="lab-sm text-good">A · 92</span></div>
+              <div class="box" style="padding:6px 10px; display:flex; justify-content:space-between;"><span class="lab-sm" lang="ja">渋谷 1K Loft</span><span class="lab-sm text-accent">D · 54</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SECTION 2: LOADING ========== -->
+  <section class="section has-adopted">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <h2 class="section-title">等待 · 10–30 秒</h2>
+      <div class="section-note">spec 要求清楚显示「抓取中 / 分析中 / 报告生成中」。<br/>探索两种节奏：分步阶梯 vs. 旋转骨架。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames two">
+
+      <!-- 2A -->
+      <div class="frame">
+        <span class="tag">2A</span>
+        <span class="pros">推荐</span>
+        <h3 class="frame-title">阶梯式 (5 步)</h3>
+        <p class="frame-sub">每个步骤完成打勾，当前步骤脉冲。无 spinner — 数据工具的节奏。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:40px 24px 56px; text-align:center;">
+            <div class="lab" style="font-size:22px; margin-bottom:8px;" lang="ja">取得・分析中…</div>
+            <div class="tiny" style="margin-bottom:30px;">https://airbnb.com/rooms/12345678</div>
+            <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0; align-items:center;">
+              <div class="col center" style="position:relative;">
+                <div class="box" style="border-radius:50%; width:34px; height:34px; background:var(--ink); color:var(--paper); padding:0;" >
+                  <div class="center" style="height:100%;"><span class="lab-sm" style="color:var(--paper);">✓</span></div>
+                </div>
+                <span class="lab-sm">URL検証</span>
+              </div>
+              <div class="col center">
+                <div class="box" style="border-radius:50%; width:34px; height:34px; background:var(--ink); color:var(--paper); padding:0;">
+                  <div class="center" style="height:100%;"><span class="lab-sm" style="color:var(--paper);">✓</span></div>
+                </div>
+                <span class="lab-sm">取得</span>
+              </div>
+              <div class="col center">
+                <div class="box" style="border-radius:50%; width:38px; height:38px; padding:0; background:var(--warn); border-width:3px;">
+                  <div class="center" style="height:100%;"><span class="lab">3</span></div>
+                </div>
+                <span class="lab-sm text-warn">5項目分析…</span>
+              </div>
+              <div class="col center">
+                <div class="box" style="border-radius:50%; width:34px; height:34px; padding:0;">
+                  <div class="center" style="height:100%;"><span class="lab-sm">4</span></div>
+                </div>
+                <span class="lab-sm text-mute">AIレポ</span>
+              </div>
+              <div class="col center">
+                <div class="box" style="border-radius:50%; width:34px; height:34px; padding:0;">
+                  <div class="center" style="height:100%;"><span class="lab-sm">5</span></div>
+                </div>
+                <span class="lab-sm text-mute">完了</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2B -->
+      <div class="frame alt adopted">
+        <span class="tag">2B</span>
+        <span class="pros">骨架预览</span>
+        <span class="stamp-adopted">ADOPTED</span>
+        <h3 class="frame-title">骨架结果页</h3>
+        <p class="frame-sub">立刻显示最终页面布局，但内容是占位灰条。心理感受更快。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:16px;">
+            <div class="row" style="gap:10px;">
+              <div class="box fill-w" style="flex:1; height:110px;">
+                <div class="lab-sm text-mute">[スコア…]</div>
+                <div style="height:60px; background:var(--ink-mute); opacity:.3; border-radius:3px; margin-top:8px;"></div>
+              </div>
+              <div class="col" style="flex:1.4; gap:6px;">
+                <div class="box fill-w" style="height:24px;"></div>
+                <div class="box fill-w" style="height:24px;"></div>
+                <div class="box fill-w" style="height:24px;"></div>
+                <div class="box fill-w" style="height:24px;"></div>
+              </div>
+            </div>
+            <div class="dim-grid" style="margin-top:10px; grid-template-columns:repeat(5,1fr);">
+              <div class="box fill-w" style="height:50px;"></div>
+              <div class="box fill-w" style="height:50px;"></div>
+              <div class="box fill-w" style="height:50px;"></div>
+              <div class="box fill-w" style="height:50px;"></div>
+              <div class="box fill-w" style="height:50px;"></div>
+            </div>
+            <div class="tiny center" style="margin-top:14px;">分析中… 数据正在填入</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SECTION 3: RESULT (the big one) ========== -->
+  <section class="section has-adopted">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <h2 class="section-title">结果页 · 主战场</h2>
+      <div class="section-note">所有内容都在这里。重点在「评分卡是焦点」。<br/>4 种结构布局：两栏 / 三栏 / 单栏 / 仪表板风。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames two">
+
+      <!-- 3A -->
+      <div class="frame wide adopted">
+        <span class="tag">3A</span>
+        <span class="pros">推荐 · spec 默认</span>
+        <span class="stamp-adopted">ADOPTED</span>
+        <h3 class="frame-title">两栏：左·结构数据 / 右·AI报告</h3>
+        <p class="frame-sub">最贴合 spec §4 描述。评分卡占左上焦点，AI 报告固定右侧便于滚动阅读。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:14px;">
+            <!-- meta row -->
+            <div class="between" style="border-bottom:1.5px dashed var(--ink-mute); padding-bottom:8px; margin-bottom:12px;">
+              <div>
+                <div class="lab" style="font-size:18px;" lang="ja">近藤の家 · 新宿2BR</div>
+                <div class="tiny">airbnb.com/rooms/12345678  ↗</div>
+              </div>
+              <div class="tiny">診断日時 2026-05-27 14:32</div>
+            </div>
+
+            <div class="row" style="gap:14px; align-items:flex-start;">
+              <!-- LEFT col -->
+              <div class="col" style="flex:1.2; gap:10px;">
+                <!-- score card -->
+                <div class="box fill-y" style="padding:14px; display:flex; align-items:flex-end; gap:18px; border-width:3px;">
+                  <div class="letter">B</div>
+                  <div class="col" style="flex:1; gap:2px;">
+                    <div class="num-big">78 点</div>
+                    <div class="lab-sm">↑ +0.2 前回比</div>
+                    <div class="lab-sm text-mute">Aまで あと 12点</div>
+                  </div>
+                </div>
+                <!-- 8 step -->
+                <div class="box" style="padding:8px;">
+                  <div class="lab-sm text-mute" style="margin-bottom:5px;">QUALITY STATUS</div>
+                  <div class="ladder">
+                    <div class="step">健全</div>
+                    <div class="step">指導</div>
+                    <div class="step active">警告</div>
+                    <div class="step">保留</div>
+                    <div class="step">追警</div>
+                    <div class="step">予定</div>
+                    <div class="step">停止</div>
+                    <div class="step">削除</div>
+                  </div>
+                </div>
+                <!-- dimensions -->
+                <div class="dim-grid">
+                  <div class="dim-card"><div class="gh">📷<span class="lab-sm">B</span></div><div class="lab-sm" lang="ja">写真</div><div class="v">12 枚</div></div>
+                  <div class="dim-card"><div class="gh">🔤<span class="lab-sm">C</span></div><div class="lab-sm" lang="ja">タイトル</div><div class="v">42 字</div></div>
+                  <div class="dim-card"><div class="gh">📝<span class="lab-sm text-good">A</span></div><div class="lab-sm" lang="ja">紹介文</div><div class="v">7/7</div></div>
+                  <div class="dim-card"><div class="gh">🛋️<span class="lab-sm">B</span></div><div class="lab-sm" lang="ja">アメニティ</div><div class="v">14/18</div></div>
+                  <div class="dim-card"><div class="gh">💬<span class="lab-sm">C</span></div><div class="lab-sm" lang="ja">レビュー</div><div class="v">4.6/5</div></div>
+                </div>
+                <!-- trend -->
+                <div class="trend">
+                  <div class="lab-sm">スコア履歴 (C1)</div>
+                  <svg viewBox="0 0 200 50" preserveAspectRatio="none" style="position:absolute; inset:24px 12px 8px;">
+                    <path d="M10 35 L190 18" stroke="var(--ink)" stroke-width="2" fill="none"/>
+                    <circle cx="10" cy="35" r="3" fill="var(--ink)"/>
+                    <circle cx="190" cy="18" r="3" fill="var(--ink)"/>
+                  </svg>
+                  <span class="tiny" style="position:absolute; left:8px; bottom:4px;">1年前 4.5</span>
+                  <span class="tiny" style="position:absolute; right:8px; bottom:4px;">現在 4.7</span>
+                </div>
+                <!-- alert -->
+                <div class="box fill-g" style="padding:8px;"><span class="lab-sm">✅ スコア健全 · アラート未発動 (F1)</span></div>
+                <div class="box" style="padding:8px;"><span class="lab-sm">📧 次回サマリー: 来週月曜 9:00 (F7) · [テスト送信]</span></div>
+              </div>
+
+              <!-- RIGHT col -->
+              <div class="col" style="flex:1; gap:8px;">
+                <div class="box" style="padding:10px;">
+                  <div class="between" style="margin-bottom:6px;">
+                    <span class="lab">AI 診断レポート</span>
+                    <span class="lab-sm box" style="padding:2px 8px;">📄 PDF</span>
+                  </div>
+                  <div style="height:50px; background:var(--ink-mute); opacity:.18; border-radius:3px; margin-bottom:8px;"></div>
+                  <div class="lab-sm text-mute" style="margin-bottom:4px;">Top 3 改善優先度</div>
+                  <div class="col" style="gap:5px;">
+                    <div class="box fill-w" style="padding:6px 8px;"><span class="lab-sm">01 · リビング写真をカバーに</span></div>
+                    <div class="box fill-w" style="padding:6px 8px;"><span class="lab-sm">02 · Wi-Fi速度を紹介文に</span></div>
+                    <div class="box fill-w" style="padding:6px 8px;"><span class="lab-sm">03 · 浴室写真を2-3枚追加</span></div>
+                  </div>
+                  <div class="lab-sm text-mute" style="margin-top:10px;">5項目別の分析</div>
+                  <div style="height:14px; background:var(--ink-mute); opacity:.15; border-radius:3px; margin-top:4px;"></div>
+                  <div style="height:14px; background:var(--ink-mute); opacity:.15; border-radius:3px; margin-top:4px;"></div>
+                  <div style="height:14px; background:var(--ink-mute); opacity:.15; border-radius:3px; margin-top:4px;"></div>
+                  <div class="box fill-r" style="margin-top:10px; padding:5px 8px;"><span class="lab-sm">⚠️ リスク: 「WiFi遅い」5件</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3B -->
+      <div class="frame">
+        <span class="tag">3B</span>
+        <span class="pros">焦点强化</span>
+        <h3 class="frame-title">单栏 · 评分占满</h3>
+        <p class="frame-sub">第一屏只看到大评分卡 + Top3 改进。其余内容向下滚动。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:16px;">
+            <div class="box fill-y" style="padding:18px; text-align:center; border-width:3px; margin-bottom:10px;">
+              <div class="letter">B</div>
+              <div class="num-big">78 点 · ↑+0.2</div>
+              <div class="lab-sm text-mute">Aまで あと 12点</div>
+            </div>
+            <div class="box" style="padding:10px;">
+              <div class="lab">🔥 今すぐやる Top 3</div>
+              <div class="col" style="gap:5px; margin-top:6px;">
+                <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">01 · リビング写真をカバーに</span></div>
+                <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">02 · Wi-Fi速度を紹介文に</span></div>
+                <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">03 · 浴室写真を2-3枚追加</span></div>
+              </div>
+            </div>
+            <div class="lab-sm text-mute center" style="margin-top:14px;">↓ スクロールで詳細</div>
+            <div class="dim-grid" style="margin-top:6px;">
+              <div class="dim-card" style="min-height:50px; padding:5px;"><span class="lab-sm">📷</span></div>
+              <div class="dim-card" style="min-height:50px; padding:5px;"><span class="lab-sm">🔤</span></div>
+              <div class="dim-card" style="min-height:50px; padding:5px;"><span class="lab-sm">📝</span></div>
+              <div class="dim-card" style="min-height:50px; padding:5px;"><span class="lab-sm">🛋️</span></div>
+              <div class="dim-card" style="min-height:50px; padding:5px;"><span class="lab-sm">💬</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3C -->
+      <div class="frame alt">
+        <span class="tag">3C</span>
+        <span class="pros">仪表板感</span>
+        <h3 class="frame-title">三栏 · 仪表板</h3>
+        <p class="frame-sub">评分 + 维度网格 + 报告并列。给「老板看一眼就懂全部」的感觉。但要小心信息密度。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:14px;">
+            <div class="row" style="gap:8px;">
+              <div class="col" style="flex:.9; gap:6px;">
+                <div class="box fill-y" style="padding:10px; text-align:center;">
+                  <div class="letter sm">B</div>
+                  <div class="lab">78 · ↑+0.2</div>
+                </div>
+                <div class="box" style="padding:6px;"><span class="lab-sm">QS · 警告</span></div>
+                <div class="trend" style="height:60px;">
+                  <svg viewBox="0 0 100 30" preserveAspectRatio="none" style="position:absolute; inset:18px 6px 4px; width:calc(100% - 12px); height:calc(100% - 22px);"><path d="M5 25 L95 12" stroke="var(--ink)" stroke-width="2" fill="none"/><circle cx="5" cy="25" r="2" fill="var(--ink)"/><circle cx="95" cy="12" r="2" fill="var(--ink)"/></svg>
+                </div>
+              </div>
+              <div class="col" style="flex:1; gap:6px;">
+                <div class="dim-card" style="min-height:auto; padding:6px;"><div class="gh">📷 写真<span class="lab-sm">B</span></div><div class="v" style="font-size:16px;">12枚 · 浴室不足</div></div>
+                <div class="dim-card" style="min-height:auto; padding:6px;"><div class="gh">🔤 タイトル<span class="lab-sm">C</span></div><div class="v" style="font-size:16px;">42字 · SEO待</div></div>
+                <div class="dim-card" style="min-height:auto; padding:6px;"><div class="gh">📝 紹介文<span class="lab-sm text-good">A</span></div><div class="v" style="font-size:16px;">7/7 ✅</div></div>
+                <div class="dim-card" style="min-height:auto; padding:6px;"><div class="gh">🛋️ アメニティ<span class="lab-sm">B</span></div><div class="v" style="font-size:16px;">14/18</div></div>
+                <div class="dim-card" style="min-height:auto; padding:6px;"><div class="gh">💬 レビュー<span class="lab-sm">C</span></div><div class="v" style="font-size:16px;">4.6 · WiFi×5</div></div>
+              </div>
+              <div class="col" style="flex:1; gap:6px;">
+                <div class="box" style="padding:8px;">
+                  <div class="lab">AI レポ</div>
+                  <div style="height:14px; background:var(--ink-mute); opacity:.15; margin-top:4px;"></div>
+                  <div style="height:14px; background:var(--ink-mute); opacity:.15; margin-top:3px;"></div>
+                </div>
+                <div class="box fill-w" style="padding:6px;"><span class="lab-sm">01 リビング写真→カバー</span></div>
+                <div class="box fill-w" style="padding:6px;"><span class="lab-sm">02 Wi-Fi速度を追記</span></div>
+                <div class="box fill-w" style="padding:6px;"><span class="lab-sm">03 浴室写真+2-3</span></div>
+                <div class="box fill-g" style="padding:6px;"><span class="lab-sm">✅ 健全</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D -->
+      <div class="frame">
+        <span class="tag">3D</span>
+        <span class="pros">叙事式</span>
+        <h3 class="frame-title">长报告 · 数据嵌入</h3>
+        <p class="frame-sub">评分小一点，AI 报告占主角，数据卡片嵌入段落之间。适合「让老板读完」的场景。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:16px;">
+            <div class="between" style="margin-bottom:10px;">
+              <div class="row" style="align-items:center; gap:10px;">
+                <div class="letter xs" style="line-height:1;">B</div>
+                <div><div class="num-big">78</div><div class="lab-sm">↑+0.2</div></div>
+              </div>
+              <span class="lab-sm box" style="padding:3px 8px;">📄 PDF</span>
+            </div>
+            <div style="font-family:'Patrick Hand'; font-size:13px; line-height:1.5;">
+              <p style="margin:0 0 8px;">全体的に良好な状態です。<br>主な課題は <u>レビューとアメニティの整合性</u> 。</p>
+              <div class="box fill-w" style="padding:6px 8px; margin:8px 0;"><span class="lab-sm">📷 写真 12枚 · 浴室不足</span></div>
+              <p style="margin:0 0 8px;">5部屋カテゴリ中 4/5 をカバー。 <br>浴室の補足撮影で写真スコアを底上げ可能。</p>
+              <div class="box fill-y" style="padding:6px 8px; margin:8px 0;"><span class="lab-sm">💬 「WiFiが遅い」5件 検出</span></div>
+              <p style="margin:0;">紹介文への速度明記で<br>納得感が向上します。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SECTION 4: EMAIL / WEEKLY ========== -->
+  <section class="section has-adopted">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <h2 class="section-title">メール · F1 アラート / F7 週次</h2>
+      <div class="section-note">UI 内只是状态条；真正发出去的邮件长这样。<br/>spec 要求主题、Top3、链接、发送状态都要有。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames two">
+
+      <!-- 4A F1 alert mail -->
+      <div class="frame">
+        <span class="tag">4A</span>
+        <span class="pros">F1 · 评分<60</span>
+        <h3 class="frame-title">アラートメール</h3>
+        <p class="frame-sub">即時送信。1 件 / 診断 / 重複防止。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:12px;">
+            <div class="row" style="font-family:'Patrick Hand'; font-size:13px; margin-bottom:6px; gap:6px;">
+              <span class="text-mute">From:</span><span>sozo-review@</span>
+            </div>
+            <div class="row" style="font-family:'Patrick Hand'; font-size:13px; margin-bottom:6px; gap:6px;">
+              <span class="text-mute">Subj:</span><span>⚠️ 警告 · 渋谷 1K Loft · 54点</span>
+            </div>
+            <div class="box fill-r" style="padding:8px; margin:10px 0;">
+              <div class="lab">スコア 54 点 (D)</div>
+              <div class="lab-sm">前回 62 ↓ −8 · しきい値 60 を下回りました</div>
+            </div>
+            <div class="lab-sm text-mute" style="margin:8px 0 4px;">Top 3 課題</div>
+            <div class="col" style="gap:4px;">
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">写真 3枚しかない</span></div>
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">紹介文 4/7 未入力</span></div>
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">「汚い」3件 検出</span></div>
+            </div>
+            <div class="box" style="background:var(--ink); color:var(--paper); padding:8px; margin-top:10px; text-align:center;"><span class="lab-sm" style="color:var(--paper);">→ レポートを見る</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4B F7 weekly -->
+      <div class="frame alt adopted">
+        <span class="tag">4B</span>
+        <span class="pros">F7 · 毎月曜 9:00</span>
+        <span class="stamp-adopted">ADOPTED</span>
+        <h3 class="frame-title">週次サマリー</h3>
+        <p class="frame-sub">過去 7 日のまとめ。グレード分布 + 危険物件 Top 3。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:12px;">
+            <div class="row" style="font-family:'Patrick Hand'; font-size:13px; margin-bottom:6px; gap:6px;">
+              <span class="text-mute">Subj:</span><span>📊 週次 · 2026-W22 · 12件 診断</span>
+            </div>
+            <div class="lab-sm text-mute" style="margin:8px 0 4px;">グレード分布</div>
+            <div class="row" style="gap:4px; margin-bottom:8px;">
+              <div class="box fill-g" style="flex:3; padding:4px 6px; text-align:center;"><span class="lab-sm">A · 3</span></div>
+              <div class="box" style="flex:5; padding:4px 6px; text-align:center; background:rgba(122,156,47,.25);"><span class="lab-sm">B · 5</span></div>
+              <div class="box fill-y" style="flex:3; padding:4px 6px; text-align:center;"><span class="lab-sm">C · 3</span></div>
+              <div class="box fill-r" style="flex:1; padding:4px 6px; text-align:center;"><span class="lab-sm">D · 1</span></div>
+            </div>
+            <div class="lab-sm text-mute" style="margin:8px 0 4px;">⚠️ 要対応 Top 3</div>
+            <div class="col" style="gap:4px;">
+              <div class="box" style="padding:5px 8px; display:flex; justify-content:space-between;"><span class="lab-sm">渋谷 1K Loft</span><span class="lab-sm text-accent">D · 54</span></div>
+              <div class="box" style="padding:5px 8px; display:flex; justify-content:space-between;"><span class="lab-sm">代々木 Studio</span><span class="lab-sm text-warn">C · 61</span></div>
+              <div class="box" style="padding:5px 8px; display:flex; justify-content:space-between;"><span class="lab-sm">恵比寿 House</span><span class="lab-sm text-warn">C · 64</span></div>
+            </div>
+            <div class="tiny" style="margin-top:8px;">次回 2026-06-08 (月) 09:00 自動送信</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SECTION 5: ERROR STATES ========== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <h2 class="section-title">エッジケース · エラー状態</h2>
+      <div class="section-note">spec §5 边界处理。<br/>3 种关键失败：URL 无效 / 抓取失败 / AI 失败。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames three">
+
+      <!-- 5A invalid URL -->
+      <div class="frame">
+        <span class="tag">5A</span>
+        <span class="pros">即時フィードバック</span>
+        <h3 class="frame-title">URL 無効</h3>
+        <p class="frame-sub">フォームから離れる前にインライン提示。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:36px 18px 56px;">
+            <div class="lab" style="font-size:22px; margin-bottom:14px;" lang="ja">物件ヘルスチェック</div>
+            <div class="row" style="gap:6px;">
+              <div class="box dash grow" style="padding:12px; border-color:var(--accent); background:rgba(199,56,43,.06);">
+                <span class="lab-sm">🔗 https://example.com/foo</span>
+              </div>
+              <div class="box" style="background:var(--ink-mute); color:var(--paper); padding:12px 18px;"><span class="lab">診断</span></div>
+            </div>
+            <div class="lab-sm text-accent" style="margin-top:8px;">⚠️ 有効なAirbnbのURLを入力してください</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5B crawl failed -->
+      <div class="frame alt">
+        <span class="tag">5B</span>
+        <span class="pros">明確な原因</span>
+        <h3 class="frame-title">取得失敗</h3>
+        <p class="frame-sub">fallback 用ダミーデータは表示しない (spec §5)。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:30px 18px 50px; text-align:center;">
+            <div style="font-size:42px;">🛑</div>
+            <div class="lab" style="margin:8px 0 4px;">物件データを取得できません</div>
+            <div class="tiny" style="margin-bottom:14px;">URLをご確認の上、しばらく経ってから再度お試しください。</div>
+            <div class="row" style="gap:6px; justify-content:center;">
+              <div class="box" style="padding:8px 14px;"><span class="lab-sm">← 戻る</span></div>
+              <div class="box" style="background:var(--ink); color:var(--paper); padding:8px 14px;"><span class="lab-sm" style="color:var(--paper);">再試行</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5C AI fail (partial) -->
+      <div class="frame">
+        <span class="tag">5C</span>
+        <span class="pros">部分的 OK</span>
+        <h3 class="frame-title">AI レポートのみ失敗</h3>
+        <p class="frame-sub">他は表示。AI セクションは "再読込" でリトライ可能。</p>
+        <div class="chrome">
+          <div class="topbar"><i></i><i></i><i></i><u></u></div>
+          <div style="padding:14px;">
+            <div class="box fill-y" style="padding:8px; text-align:center; margin-bottom:8px;">
+              <div class="letter sm">B</div>
+              <div class="lab">78 点</div>
+            </div>
+            <div class="dim-grid" style="margin-bottom:8px;">
+              <div class="dim-card" style="padding:5px; min-height:auto;"><span class="lab-sm">📷</span></div>
+              <div class="dim-card" style="padding:5px; min-height:auto;"><span class="lab-sm">🔤</span></div>
+              <div class="dim-card" style="padding:5px; min-height:auto;"><span class="lab-sm">📝</span></div>
+              <div class="dim-card" style="padding:5px; min-height:auto;"><span class="lab-sm">🛋️</span></div>
+              <div class="dim-card" style="padding:5px; min-height:auto;"><span class="lab-sm">💬</span></div>
+            </div>
+            <div class="box dash" style="padding:14px; text-align:center; background:rgba(199,56,43,.06);">
+              <div class="lab-sm text-mute" style="margin-bottom:6px;">AI レポート</div>
+              <div class="lab-sm">⚠️ 一時的に利用できません</div>
+              <div class="tiny" style="margin:6px 0 10px;">2回試行しました</div>
+              <div class="box" style="padding:5px 14px; background:var(--ink); color:var(--paper); display:inline-block;"><span class="lab-sm" style="color:var(--paper);">↻ 再読込</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SECTION 6: PDF report layout ========== -->
+  <section class="section">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <h2 class="section-title">PDF レポート · ダウンロード後</h2>
+      <div class="section-note">spec §3.4 必須章。整潔な縦長レイアウト。<br/>運営がそのまま使える「現場資料」感。</div>
+    </div>
+    <div class="section-rule"></div>
+
+    <div class="frames two">
+      <div class="frame">
+        <span class="tag">6</span>
+        <span class="pros">A4 縦</span>
+        <h3 class="frame-title">PDF 構成</h3>
+        <p class="frame-sub">5 章固定。文字主体、装飾控えめ。</p>
+        <div class="chrome" style="background:#FFFFFE;">
+          <div style="padding:18px; border:1px solid var(--ink-mute); margin:6px;">
+            <div class="between" style="border-bottom:1.5px solid var(--ink); padding-bottom:6px; margin-bottom:10px;">
+              <div>
+                <div class="lab">SOZO Review · 診断レポート</div>
+                <div class="tiny">近藤の家 · 新宿2BR · 2026-05-27</div>
+              </div>
+              <div class="letter xs">B</div>
+            </div>
+            <div class="lab-sm text-mute" style="margin-bottom:4px;">§1 総評</div>
+            <div style="height:30px; background:var(--ink-mute); opacity:.12; margin-bottom:10px;"></div>
+            <div class="lab-sm text-mute" style="margin-bottom:4px;">§2 5項目分析</div>
+            <div class="row" style="gap:4px; margin-bottom:10px;">
+              <div class="box" style="flex:1; padding:4px;"><span class="lab-sm">📷</span></div>
+              <div class="box" style="flex:1; padding:4px;"><span class="lab-sm">🔤</span></div>
+              <div class="box" style="flex:1; padding:4px;"><span class="lab-sm">📝</span></div>
+              <div class="box" style="flex:1; padding:4px;"><span class="lab-sm">🛋️</span></div>
+              <div class="box" style="flex:1; padding:4px;"><span class="lab-sm">💬</span></div>
+            </div>
+            <div class="lab-sm text-mute" style="margin-bottom:4px;">§3 Top 3 改善優先度</div>
+            <div class="col" style="gap:4px; margin-bottom:10px;">
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">01 リビング写真→カバー · 想定+0.4</span></div>
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">02 Wi-Fi速度を追記 · 想定+0.2</span></div>
+              <div class="box fill-w" style="padding:5px 8px;"><span class="lab-sm">03 浴室写真+2-3枚 · 想定+0.15</span></div>
+            </div>
+            <div class="lab-sm text-mute" style="margin-bottom:4px;">§4 リスク</div>
+            <div class="box fill-r" style="padding:5px 8px;"><span class="lab-sm">⚠️ 「WiFi遅い」5件 検出</span></div>
+            <div class="tiny" style="margin-top:14px; text-align:right;">SOZONEXT · p.1/3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- annotation panel -->
+      <div class="frame alt">
+        <span class="tag">注</span>
+        <h3 class="frame-title">設計メモ</h3>
+        <p class="frame-sub">spec の核心アサーション。実装時に守るべき骨格。</p>
+        <ul style="font-family:'Patrick Hand'; font-size:15px; line-height:1.6; padding-left:20px; margin:8px 0;">
+          <li><b>評分卡が唯一の焦点。</b> 字母 120px+、距離 3m から判読可能。</li>
+          <li><b>5 維度カードは横並び。</b> spec §4。グリッド以外の配置はしない。</li>
+          <li><b>AI レポートは右側（≥1024px）。</b> スクロール時も上部固定。</li>
+          <li><b>色は信号機。</b> A 緑 / B 黄緑 / C 黄 / D 赤。色盲対応のため文字記号も併用。</li>
+          <li><b>Spinner 不使用。</b> 進捗は階段ステップで明示。</li>
+          <li><b>fallback ダミーデータ禁止。</b> エラーは正直に出す (§5)。</li>
+          <li><b>1 診断 = 1 メール最大。</b> 同物件の重複アラート禁止 (F1)。</li>
+          <li><b>scope creep 禁止。</b> ログイン・portfolio・モバイル App は今期やらない (§6)。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LEGEND ========== -->
+  <footer class="legend">
+    <span><i style="background:rgba(0,0,0,.04);"></i> プレースホルダ</span>
+    <span><i style="background:rgba(217,139,31,.18);"></i> 警告/注意状態</span>
+    <span><i style="background:rgba(47,143,94,.18);"></i> 健全状態</span>
+    <span><i style="background:rgba(199,56,43,.16);"></i> 危険/エラー</span>
+    <span><i style="border-style:dashed;"></i> 編集可能領域</span>
+    <span><i style="border-color:var(--good); background:rgba(47,143,94,.15);"></i> 採用 · ADOPTED</span>
+    <span style="margin-left:auto;">SOZO Review · v0.2 wireframes · 4 directions adopted → see <code>ui_kits/review_app/</code></span>
+  </footer>
+
+</div>
+</body>
+</html>

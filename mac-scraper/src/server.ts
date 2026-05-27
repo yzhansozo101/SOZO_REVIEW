@@ -1,7 +1,14 @@
 import "dotenv/config";
 import express from "express";
 import { fileURLToPath } from "node:url";
+import { z } from "zod";
+import { bearerAuth } from "./auth.js";
 import { log } from "./log.js";
+
+const diagnoseSchema = z.object({
+  url: z.string().url(),
+  compare_to_listing_id: z.string().optional(),
+});
 
 export function createApp() {
   const app = express();
@@ -9,6 +16,16 @@ export function createApp() {
 
   app.get("/healthz", (_req, res) => {
     res.json({ ok: true });
+  });
+
+  app.post("/diagnose", bearerAuth(), (req, res) => {
+    const parsed = diagnoseSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "invalid_request" });
+      return;
+    }
+
+    res.status(501).json({ error: "not_implemented" });
   });
 
   return app;

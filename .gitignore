@@ -10,3 +10,16 @@ node_modules/
 *.log
 .vscode/
 .idea/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Env
+.env.*.local
+
+# Mac scraper
+mac-scraper/node_modules/
+mac-scraper/dist/
+mac-scraper/.env

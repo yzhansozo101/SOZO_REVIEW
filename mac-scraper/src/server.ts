@@ -3,6 +3,7 @@ import express from "express";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { bearerAuth } from "./auth.js";
+import { sampleDiagnosis } from "./fixtures/sample.js";
 import { log } from "./log.js";
 
 const diagnoseSchema = z.object({
@@ -25,7 +26,8 @@ export function createApp() {
       return;
     }
 
-    res.status(501).json({ error: "not_implemented" });
+    log.info({ url: parsed.data.url }, "fixture diagnose");
+    res.json(sampleDiagnosis);
   });
 
   return app;

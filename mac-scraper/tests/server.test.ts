@@ -38,3 +38,18 @@ describe("auth", () => {
     expect(res.status).toBe(200);
   });
 });
+
+describe("POST /diagnose (fixture)", () => {
+  it("returns the sample fixture for any valid URL", async () => {
+    const app = createApp();
+    const res = await request(app)
+      .post("/diagnose")
+      .set("Authorization", "Bearer test-secret")
+      .send({ url: "https://www.airbnb.jp/rooms/1174411978184206231" });
+    expect(res.status).toBe(200);
+    expect(res.body.listing_id).toBe("1174411978184206231");
+    expect(res.body.grade).toBe("B");
+    expect(res.body.dimensions.photos.score).toBe(95);
+    expect(res.body.ai.status).toBe("fallback");
+  });
+});

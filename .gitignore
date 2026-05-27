@@ -23,3 +23,6 @@ next-env.d.ts
 mac-scraper/node_modules/
 mac-scraper/dist/
 mac-scraper/.env
+
+# pnpm local store (created when global store isn't writable, e.g. sandbox runs)
+.pnpm-store/

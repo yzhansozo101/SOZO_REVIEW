@@ -49,7 +49,7 @@ export function TrendChart({ current }: Props) {
         </ResponsiveContainer>
       </div>
       <p className="t-caption" style={{ marginTop: "var(--s-2)" }}>
-        ※ 「1 年前」のデータは示例値です。次バージョンで実履歴を表示します。
+        ※ 近 1 年の評価はデモ用データです。次バージョンで実履歴を表示します。
       </p>
     </section>
   );

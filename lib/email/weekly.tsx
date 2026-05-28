@@ -27,12 +27,12 @@ export function F7WeeklyEmail({ weekOf, totalDiagnosed, distribution, top3Worst 
       <Head />
       <Body style={{ fontFamily: "Noto Sans JP, sans-serif", color: ink, backgroundColor: "#FAF8F4" }}>
         <Container style={{ maxWidth: 600, padding: 24, backgroundColor: "#fff", borderRadius: 8 }}>
-          <Heading style={{ margin: 0 }}>SOZO 物件ヘルス週次サマリー</Heading>
+          <Heading style={{ margin: 0 }}>SOZONEXT 物件ヘルス週次サマリー</Heading>
           <Text style={{ color: muted, marginTop: 4 }}>{weekOf} 週</Text>
 
           <Section style={{ marginTop: 16 }}>
             <Text style={{ margin: 0 }}>
-              本週診断物件数: <strong>{totalDiagnosed}</strong> 件
+              今週の診断物件数: <strong>{totalDiagnosed}</strong> 件
             </Text>
             <Text style={{ margin: "4px 0" }}>
               評価分布: A {distribution.A} · B {distribution.B} · C {distribution.C} · D{" "}
@@ -58,7 +58,7 @@ export function F7WeeklyEmail({ weekOf, totalDiagnosed, distribution, top3Worst 
           ))}
 
           <Text style={{ marginTop: 20, fontSize: 11, color: muted }}>
-            ※ demo 段階:定時送信は v1 で実装します。本メールは手動「テスト送信」によるものです。
+            ※ デモ段階では定時送信なし。次回自動送信予定「来週月曜 09:00」は画面上のデモ表示です。本メールは手動「テスト送信」によるものです。
           </Text>
         </Container>
       </Body>

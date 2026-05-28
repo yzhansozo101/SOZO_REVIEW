@@ -29,7 +29,7 @@ export function DimensionGrid({ dimensions }: Props) {
           5項目スコア分析
         </h2>
         <span className="t-mono" style={{ color: "var(--ink-500)", fontSize: "11px" }}>
-          B series
+          5次元
         </span>
       </div>
       <div

@@ -460,7 +460,7 @@ function buildF7Html({ alertEmailTo }: { alertEmailTo: string }) {
       ${emailHeaders({
         from: "sozo-review@sozonext.co",
         to: alertEmailTo,
-        subject: `週次サマリー · 2026-05-25 週 · ${total}件 診断`,
+        subject: `SOZONEXT 物件ヘルス週次サマリー · 2026-05-25 · ${total}件 診断`,
       })}
       <div class="mail-preview-content">
         <h3 class="mail-preview-h3">グレード分布</h3>
@@ -507,7 +507,7 @@ function buildF7Html({ alertEmailTo }: { alertEmailTo: string }) {
         </table>
 
         <p class="mail-preview-foot">
-          ※ デモ段階では定時送信なし。本プレビューは手動「テスト送信」の確認用です。
+          ※ デモ段階では定時送信なし。次回自動送信予定「来週月曜 09:00」は画面上のデモ表示です。本プレビューは手動「テスト送信」の確認用です。
         </p>
       </div>
     </article>

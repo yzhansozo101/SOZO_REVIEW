@@ -17,6 +17,7 @@ describe("F7WeeklyEmail", () => {
     expect(html).toContain("5");
     expect(html).toContain("物件 1");
     expect(html).toContain("52");
-    expect(html).toContain("v1 で実装");
+    expect(html).toContain("SOZONEXT 物件ヘルス週次サマリー");
+    expect(html).toContain("来週月曜 09:00");
   });
 });

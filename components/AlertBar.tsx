@@ -49,6 +49,9 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
         <div className="t-small" style={{ color: "inherit" }}>
           デモ段階では定時送信なし。週次サマリーは手動テスト送信のみです。
         </div>
+        <div className="t-small" style={{ color: "inherit" }}>
+          次回自動送信予定: 来週月曜 09:00(デモ表示)
+        </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s-2)", alignItems: "center" }}>
           <button type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
             F1 プレビュー
@@ -59,7 +62,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
           <form action="/api/weekly/test" method="POST">
             <input type="hidden" name="diagnosisId" value={diagnosisId} />
             <button type="submit" style={buttonStyle}>
-              週次サマリーをテスト送信
+              🧪 週次サマリーを今すぐテスト送信
             </button>
           </form>
         </div>

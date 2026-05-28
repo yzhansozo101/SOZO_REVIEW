@@ -38,9 +38,9 @@ Output a brief summary of files changed + test/build results.
 ```
 
 **Codex 必读参考:**
-- `SPEC_房源诊断系统_需求v0.4.md` §3.4 (E)、§B12 — AI 报告内容要求 + B12 输出格式
-- `ADR.md` ADR-003 + ADR-005 — 为什么走 Agent SDK,为什么单次 tool_use
-- `SYSTEM_DESIGN_v0.2.md` §7 — SDK 调用模式 + tool schema 草案
+- `docs/prd.md` §3.4 (E)、§B12 — AI 报告内容要求 + B12 输出格式
+- [`docs/adr/0003-claude-agent-sdk.md`](../../adr/0003-claude-agent-sdk.md) + [`docs/adr/0005-single-tool-use.md`](../../adr/0005-single-tool-use.md) — 为什么走 Agent SDK,为什么单次 tool_use
+- `docs/system-design.md` §7 — SDK 调用模式 + tool schema 草案
 - `design_handoff_review_app/prototype/AIReport.jsx` — UI 视觉参考(Newsreader serif body + Top3 priorities table)
 
 ---

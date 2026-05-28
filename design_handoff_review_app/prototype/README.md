@@ -1,6 +1,6 @@
 # Review App UI Kit
 
-High-fidelity interactive mock of Sozonext's **房源健康诊断系统 (Listing Health Diagnostic System)** — the product defined in `Review App/SPEC_房源诊断系统_需求v0.2.md`.
+High-fidelity interactive mock of Sozonext's **房源健康诊断系统 (Listing Health Diagnostic System)** — the product defined in `Review App/docs/prd.md` (current v0.4; prototype originally based on v0.2).
 
 ## What's here
 

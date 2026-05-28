@@ -36,8 +36,8 @@ Codex commit 后,Claude Code 用 `git log -1 --stat` + `git show HEAD` + 跑 tas
 - `design_handoff_review_app/prototype/DiagnosticForm.jsx` — Task 15 视觉参考
 - `design_handoff_review_app/prototype/ScoreCard.jsx` — Task 16 视觉参考
 - `design_handoff_review_app/prototype/fixture.js` — Task 12 fixture 形状参考
-- `SPEC_房源诊断系统_需求v0.4.md` §A1/A4 — 评分卡 + 字母 + 颜色业务规则
-- `SYSTEM_DESIGN_v0.2.md` §3-§5 — 模块树 + DB schema + API 契约
+- `docs/prd.md` §A1/A4 — 评分卡 + 字母 + 颜色业务规则
+- `docs/system-design.md` §3-§5 — 模块树 + DB schema + API 契约
 - `CLAUDE.md` §6 — v0.4 必须落实的 deltas(本 plan 中 v0.4 deltas 主要影响后续 plan,Plan 1 仅保证 ja 锁定 + ScoreCard 字母配色对齐)
 
 ---
@@ -46,7 +46,7 @@ Codex commit 后,Claude Code 用 `git log -1 --stat` + `git show HEAD` + 跑 tas
 
 - Branch: `feature/prototype`
 - 工作树干净
-- 已有:`SPEC_房源诊断系统_需求v0.4.md`、`SYSTEM_DESIGN_v0.2.md`、`ADR.md`、`CLAUDE.md`、`design_handoff_review_app/`、`用户流程图_v0.2.mermaid`、`.gitignore`、`.claude/`
+- 已有:`docs/prd.md`、`docs/system-design.md`、`docs/adr/`、`CLAUDE.md`、`design_handoff_review_app/`、`docs/user-flow.md`、`.gitignore`、`.claude/`
 - 缺:`package.json`(root)、`node_modules`、`mac-scraper/`、`lib/`、`app/`、`components/`、`.env.local`
 
 ---

@@ -34,8 +34,8 @@ Output a brief summary listing files changed and test/build results.
 ```
 
 **Codex 必读参考(按需逐 task):**
-- `SYSTEM_DESIGN_v0.2.md` §8 — 各字段在 deferred-state JSON 内的路径
-- `SPEC_房源诊断系统_需求v0.4.md` §3.2 (B1/B2/B3/B6/B7/B8/B10/B12) — 业务规则
+- `docs/system-design.md` §8 — 各字段在 deferred-state JSON 内的路径
+- `docs/prd.md` §3.2 (B1/B2/B3/B6/B7/B8/B10/B12) — 业务规则
 - `design_handoff_review_app/prototype/DimensionGrid.jsx` — T14 视觉参考
 - `design_handoff_review_app/prototype/kit.css` — 维度卡 CSS 参考
 - `mac-scraper/tests/fixtures/airbnb-pdp-deferred.json` — T1 录制的样本(T2+ 测试基准)

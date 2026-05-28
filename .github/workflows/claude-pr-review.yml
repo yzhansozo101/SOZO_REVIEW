@@ -41,9 +41,9 @@ jobs:
 
             - `CLAUDE.md` — project overview, rules, branch policy
             - `.claude/rules/never-inline-secrets.md` — must-follow rule
-            - `SPEC_房源诊断系统_需求v0.4.md` — PRD
-            - `SYSTEM_DESIGN_v0.2.md` — architecture
-            - `ADR.md` — architecture decisions
+            - `docs/prd.md` — PRD
+            - `docs/system-design.md` — architecture
+            - `docs/adr/` — architecture decision records (one file per decision)
             - `docs/superpowers/plans/phase*-status.md` — what is already done per phase
 
             ## What to review

@@ -24,14 +24,14 @@
 
 | ファイル | 役割 |
 |---|---|
-| [SPEC_房源诊断系统_需求v0.4.md](SPEC_房源诊断系统_需求v0.4.md) | PRD:機能・受け入れ条件・エッジケース |
-| [SYSTEM_DESIGN_v0.2.md](SYSTEM_DESIGN_v0.2.md) | アーキテクチャ・モジュール構成・DB スキーマ・API 契約 |
-| [ADR.md](ADR.md) | 5 つのアーキテクチャ決定(Vercel+Mac / fetch / Claude SDK / 同期 / 単一 tool_use) |
+| [docs/prd.md](docs/prd.md) | PRD:機能・受け入れ条件・エッジケース |
+| [docs/system-design.md](docs/system-design.md) | アーキテクチャ・モジュール構成・DB スキーマ・API 契約 |
+| [docs/adr/](docs/adr/) | 5 つのアーキテクチャ決定(Vercel+Mac / fetch / Claude SDK / 同期 / 単一 tool_use) |
+| [docs/user-flow.md](docs/user-flow.md) | ユーザーフロー図(Mermaid 埋め込み) |
 | [design_handoff_review_app/README.md](design_handoff_review_app/README.md) | Spec → コンポーネントマップ・実装チェックリスト |
 | [design_handoff_review_app/prototype/](design_handoff_review_app/prototype/) | **ビジュアル参照のみ**(React-via-Babel、出荷しない) |
 | [design_handoff_review_app/design_system/colors_and_type.css](design_handoff_review_app/design_system/colors_and_type.css) | デザイントークン CSS(そのまま流用) |
 | [design_handoff_review_app/wireframes/Wireframes.html](design_handoff_review_app/wireframes/Wireframes.html) | 採用済み 4 レイアウト:**1C · 2B · 3A · 4B** のみ参照 |
-| [用户流程图_v0.2.mermaid](用户流程图_v0.2.mermaid) | ユーザーフロー図 |
 
 **ルール**:仕様の解釈で迷ったら上記ファイルが正、コードや prototype が衝突したら仕様優先。仕様自体を変更したい場合は必ずユーザー確認。
 

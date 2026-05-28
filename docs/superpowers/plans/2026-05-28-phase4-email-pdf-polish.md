@@ -39,8 +39,8 @@ Output summary of files changed + test/build results.
 ```
 
 **Codex 必读参考:**
-- `SPEC_房源诊断系统_需求v0.4.md` §3.4(PDF / E)+ §3.5(F1 + F7)+ §A5(8 档 ladder)
-- `SYSTEM_DESIGN_v0.2.md` §3 模块、§9 邮件、§10 PDF、§4 alerts_sent 表
+- `docs/prd.md` §3.4(PDF / E)+ §3.5(F1 + F7)+ §A5(8 档 ladder)
+- `docs/system-design.md` §3 模块、§9 邮件、§10 PDF、§4 alerts_sent 表
 - `design_handoff_review_app/prototype/AIReport.jsx` — PDF button placement
 - `design_handoff_review_app/prototype/AlertBar.jsx`、`EmailPreview.jsx` — F1/F7 视觉(wireframe 4B)
 - `design_handoff_review_app/prototype/ProgressView.jsx` — ProgressView 2B 视觉

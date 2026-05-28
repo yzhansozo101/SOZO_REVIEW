@@ -29,10 +29,8 @@ ulimit -n 4096 && WATCHPACK_POLLING=true pnpm dev
 ## Docs
 
 - [`CLAUDE.md`](CLAUDE.md) — project overview + rules
-- [`SPEC_房源诊断系统_需求v0.4.md`](SPEC_%E6%88%BF%E6%BA%90%E8%AF%8A%E6%96%AD%E7%B3%BB%E7%BB%9F_%E9%9C%80%E6%B1%82v0.4.md) — PRD
-- [`SYSTEM_DESIGN_v0.2.md`](SYSTEM_DESIGN_v0.2.md) — architecture
-- [`ADR.md`](ADR.md) — architecture decisions
-- [`docs/superpowers/plans/phase*-status.md`](docs/superpowers/plans/) — what each phase delivered
+- [`docs/`](docs/) — PRD / system design / user flow / ADRs (start at [`docs/README.md`](docs/README.md))
+- [`docs/superpowers/plans/`](docs/superpowers/plans/) — what each phase delivered (`phase*-status.md`)
 - [`.claude/rules/`](.claude/rules/) — project memory (e.g. never inline secrets)
 
 ## Stack

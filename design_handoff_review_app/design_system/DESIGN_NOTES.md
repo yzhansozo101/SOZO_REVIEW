@@ -10,8 +10,8 @@ This system was assembled from a single spec document — no production code or 
 
 | Source | What it is | Where |
 |---|---|---|
-| `Review App/SPEC_房源诊断系统_需求v0.2.md` | Full product spec (Chinese), v0.2, 2026-05-27, by Yuan Zhang | Local mount (Review App) |
-| `Review App/用户流程图_v0.2.mermaid` | User flow diagram | Local mount (Review App) |
+| `Review App/docs/prd.md` | Full product spec (Chinese), v0.4 (current). Originally v0.2 / 2026-05-27, by Yuan Zhang | Local mount (Review App) |
+| `Review App/docs/user-flow.md` | User flow diagram (Mermaid embedded) | Local mount (Review App) |
 
 No Figma, no logo file, no codebase, no prior design tokens were provided. If those exist elsewhere, attach them and we'll reconcile.
 

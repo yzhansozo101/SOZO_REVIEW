@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
+import { AIReport } from "@/components/AIReport";
 import { DimensionGrid } from "@/components/DimensionGrid";
 import { ScoreCard } from "@/components/ScoreCard";
 
@@ -31,20 +32,45 @@ export default async function ResultPage({ params }: Params) {
       <div className="t-small" style={{ color: "var(--ink-500)", marginBottom: "var(--s-2)" }}>
         {listing?.url}
       </div>
-      <h1 className="t-h1" style={{ marginBottom: "var(--s-5)" }}>{listing?.title ?? d.listingId}</h1>
+      <h1 className="t-h1" style={{ marginBottom: "var(--s-6)" }}>{listing?.title ?? d.listingId}</h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: "var(--s-6)" }}>
+      <div className="result-grid">
         <div>
           <ScoreCard score={d.overallScore} />
           <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
         </div>
-        <aside>
-          <h2 className="t-h2">AI レポート</h2>
-          <p className="t-editorial">
-            {d.aiReportMd || "Plan 3 で AI レポートを実装します。"}
-          </p>
-        </aside>
+        <div className="result-report">
+          <AIReport
+            reportMd={d.aiReportMd}
+            top3={(d.aiTop3 as Parameters<typeof AIReport>[0]["top3"] | null) ?? []}
+            negativeKeywords={(d.aiNegativeKw as Parameters<typeof AIReport>[0]["negativeKeywords"] | null) ?? []}
+            status={d.aiStatus === "ok" ? "ok" : "fallback"}
+          />
+        </div>
       </div>
+
+      <style>{`
+        .result-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: var(--s-6);
+        }
+
+        .result-report > aside {
+          position: static !important;
+        }
+
+        @media (min-width: 1024px) {
+          .result-grid {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          }
+
+          .result-report > aside {
+            position: sticky !important;
+            top: var(--s-5) !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

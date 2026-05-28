@@ -13,7 +13,8 @@
 - grade = B, overall_score = 76
 - POST /api/diagnose response: {"diagnosis_id":"fe2e0b00-401d-4004-9c38-832ad6f5b35f","redirect":"/d/fe2e0b00-401d-4004-9c38-832ad6f5b35f"}
 - GET /d/fe2e0b00-401d-4004-9c38-832ad6f5b35f returned 200 and rendered ScoreCard + DimensionGrid
-- Tests: root pnpm test 21 passed; mac-scraper pnpm test 49 passed
+- Tests: root pnpm test 26 passed (5 files); mac-scraper pnpm test 49 passed (11 files) — 75 total
+- vitest.config.ts include pattern fixed to match `.test.tsx` after T15 narrowed scope
 - Builds: root pnpm build passed; mac-scraper pnpm build passed
 
 ## Known gaps

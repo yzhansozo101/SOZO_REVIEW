@@ -2,9 +2,18 @@ import "dotenv/config";
 import express from "express";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import { fetchPdpHtml } from "./airbnb/fetch-pdp.js";
+import { parseDeferredState } from "./airbnb/parse-deferred.js";
+import { extractSnapshot } from "./airbnb/extract.js";
+import { fetchReviews } from "./airbnb/fetch-reviews.js";
 import { bearerAuth } from "./auth.js";
-import { sampleDiagnosis } from "./fixtures/sample.js";
 import { log } from "./log.js";
+import { scorePhotos } from "./score/photos.js";
+import { scoreDescription } from "./score/description.js";
+import { scoreAmenities } from "./score/amenities.js";
+import { scoreReviews } from "./score/reviews.js";
+import { aggregate } from "./score/index.js";
+import type { Diagnosis } from "./types.js";
 
 const diagnoseSchema = z.object({
   url: z.string().url(),
@@ -19,15 +28,84 @@ export function createApp() {
     res.json({ ok: true });
   });
 
-  app.post("/diagnose", bearerAuth(), (req, res) => {
+  app.post("/diagnose", bearerAuth(), async (req, res) => {
     const parsed = diagnoseSchema.safeParse(req.body);
     if (!parsed.success) {
       res.status(400).json({ error: "invalid_request" });
       return;
     }
 
-    log.info({ url: parsed.data.url }, "fixture diagnose");
-    res.json(sampleDiagnosis);
+    const url = parsed.data.url;
+    const m = url.match(/\/rooms\/(\d+)/);
+    if (!m) {
+      res.status(400).json({ error: "invalid_url" });
+      return;
+    }
+    const listingId = m[1];
+
+    const pdp = await fetchPdpHtml(url);
+    if (!pdp.ok) {
+      res.status(502).json({ error: pdp.error });
+      return;
+    }
+
+    const parsedDeferred = parseDeferredState(pdp.html);
+    if (!parsedDeferred.ok) {
+      res.status(502).json({ error: parsedDeferred.error });
+      return;
+    }
+
+    const snapshot = extractSnapshot(parsedDeferred.data, listingId);
+
+    let reviews: Awaited<ReturnType<typeof fetchReviews>> = { ok: true, reviews: [] };
+    if (snapshot.api_key && snapshot.reviews_persisted_hash) {
+      reviews = await fetchReviews({
+        listingId,
+        apiKey: snapshot.api_key,
+        persistedHash: snapshot.reviews_persisted_hash,
+      });
+    }
+    const reviewList = reviews.ok ? reviews.reviews : [];
+
+    const photosScore = scorePhotos(snapshot.photos);
+    const descScore = scoreDescription(snapshot.description_text ?? "");
+    const amenScore = scoreAmenities(snapshot.amenities, snapshot.description_text ?? "");
+    const reviewsScore = scoreReviews(snapshot.rating, reviewList);
+    const titleScore = { score: 70 };
+
+    const agg = aggregate({
+      photos: photosScore,
+      title: titleScore,
+      description: descScore,
+      amenities: amenScore,
+      reviews: reviewsScore,
+    });
+
+    const diagnosis: Diagnosis = {
+      listing_id: listingId,
+      title: snapshot.title ?? listingId,
+      snapshot: snapshot as unknown as Record<string, unknown>,
+      dimensions: {
+        photos: photosScore,
+        title: { score: 70, placeholder: true },
+        description: descScore,
+        amenities: amenScore,
+        reviews: reviewsScore,
+      },
+      overall_score: agg.overall_score,
+      grade: agg.grade,
+      quality_status: agg.quality_status,
+      ai: {
+        report_md: "Plan 3 で AI レポートを実装します。",
+        negative_keywords: [],
+        top3: [],
+        status: "fallback",
+      },
+      scrape_status: !reviews.ok ? "partial" : "ok",
+    };
+
+    log.info({ url, listingId, scrape_status: diagnosis.scrape_status }, "real diagnose");
+    res.json(diagnosis);
   });
 
   return app;

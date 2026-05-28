@@ -1,9 +1,39 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { readFileSync } from "node:fs";
+import { describe, it, expect, beforeAll, beforeEach, vi } from "vitest";
 import request from "supertest";
+
+vi.mock("../src/airbnb/fetch-pdp.js", () => ({
+  fetchPdpHtml: vi.fn(),
+}));
+vi.mock("../src/airbnb/fetch-reviews.js", () => ({
+  fetchReviews: vi.fn(),
+}));
+
 import { createApp } from "../src/server.js";
+import { fetchPdpHtml } from "../src/airbnb/fetch-pdp.js";
+import { fetchReviews } from "../src/airbnb/fetch-reviews.js";
+
+const deferredJson = JSON.parse(readFileSync("tests/fixtures/airbnb-pdp-deferred.json", "utf8"));
+const deferredJsonWithReviewsHash = {
+  ...deferredJson,
+  __testReviewsQuery: {
+    operationName: "StaysPdpReviewsQuery",
+    extensions: {
+      persistedQuery: {
+        version: 1,
+        sha256Hash: "0a44b1b4012f88a6b8e7a7e85d0b9a4d99f47fc5ad44b21d83b4f0ab36e3f1aa",
+      },
+    },
+  },
+};
+const htmlWrapper = `<script id="data-deferred-state-0">${JSON.stringify(deferredJsonWithReviewsHash)}</script>`;
 
 beforeAll(() => {
   process.env.SCRAPER_SECRET = "test-secret";
+});
+
+beforeEach(() => {
+  vi.resetAllMocks();
 });
 
 describe("auth", () => {
@@ -39,8 +69,11 @@ describe("auth", () => {
   });
 });
 
-describe("POST /diagnose (fixture)", () => {
-  it("returns the sample fixture for any valid URL", async () => {
+describe("POST /diagnose (real flow)", () => {
+  it("returns Diagnosis with real grade for valid URL", async () => {
+    vi.mocked(fetchPdpHtml).mockResolvedValue({ ok: true, html: htmlWrapper });
+    vi.mocked(fetchReviews).mockResolvedValue({ ok: true, reviews: [] });
+
     const app = createApp();
     const res = await request(app)
       .post("/diagnose")
@@ -48,8 +81,37 @@ describe("POST /diagnose (fixture)", () => {
       .send({ url: "https://www.airbnb.jp/rooms/1174411978184206231" });
     expect(res.status).toBe(200);
     expect(res.body.listing_id).toBe("1174411978184206231");
-    expect(res.body.grade).toBe("B");
-    expect(res.body.dimensions.photos.score).toBe(95);
-    expect(res.body.ai.status).toBe("fallback");
+    expect(["A", "B", "C", "D"]).toContain(res.body.grade);
+    expect(res.body.dimensions.photos.score).toBeGreaterThan(0);
+    expect(res.body.dimensions.description.length).toBeGreaterThan(0);
+    expect(fetchReviews).toHaveBeenCalledWith({
+      listingId: "1174411978184206231",
+      apiKey: expect.any(String),
+      persistedHash: "0a44b1b4012f88a6b8e7a7e85d0b9a4d99f47fc5ad44b21d83b4f0ab36e3f1aa",
+    });
+  });
+
+  it("returns 502 when fetchPdpHtml fails", async () => {
+    vi.mocked(fetchPdpHtml).mockResolvedValue({ ok: false, error: "not_found" });
+
+    const app = createApp();
+    const res = await request(app)
+      .post("/diagnose")
+      .set("Authorization", "Bearer test-secret")
+      .send({ url: "https://www.airbnb.jp/rooms/1174411978184206231" });
+    expect(res.status).toBe(502);
+  });
+
+  it("marks scrape_status=partial when reviews fail", async () => {
+    vi.mocked(fetchPdpHtml).mockResolvedValue({ ok: true, html: htmlWrapper });
+    vi.mocked(fetchReviews).mockResolvedValue({ ok: false, error: "hash_expired" });
+
+    const app = createApp();
+    const res = await request(app)
+      .post("/diagnose")
+      .set("Authorization", "Bearer test-secret")
+      .send({ url: "https://www.airbnb.jp/rooms/1174411978184206231" });
+    expect(res.status).toBe(200);
+    expect(res.body.scrape_status).toBe("partial");
   });
 });

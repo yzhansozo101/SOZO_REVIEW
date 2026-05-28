@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
+import { DimensionGrid } from "@/components/DimensionGrid";
 import { ScoreCard } from "@/components/ScoreCard";
 
 type Params = { params: Promise<{ id: string }> };
@@ -35,9 +36,7 @@ export default async function ResultPage({ params }: Params) {
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: "var(--s-6)" }}>
         <div>
           <ScoreCard score={d.overallScore} />
-          <p className="t-small" style={{ marginTop: "var(--s-4)" }}>
-            Plan 1 skeleton: dimensions / trend / AI report は後続フェーズで実装します。
-          </p>
+          <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
         </div>
         <aside>
           <h2 className="t-h2">AI レポート</h2>

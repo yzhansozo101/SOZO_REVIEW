@@ -24,6 +24,13 @@ export const ja = {
       upgradeAtMax: "最高等級です",
       upgradeHintTpl: "あと {points} 点で {grade} 級にアップ",
     },
+    dimensions: {
+      photos: { label: "写真", placeholder: "" },
+      title: { label: "タイトル", placeholder: "⏳ v1 で実装" },
+      description: { label: "説明文", placeholder: "" },
+      amenities: { label: "設備", placeholder: "" },
+      reviews: { label: "レビュー", placeholder: "" },
+    },
   },
 } as const;
 

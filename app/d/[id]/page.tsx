@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
 import { AIReport } from "@/components/AIReport";
+import { AlertBar } from "@/components/AlertBar";
 import { DimensionGrid } from "@/components/DimensionGrid";
 import { ScoreCard } from "@/components/ScoreCard";
 
@@ -27,6 +28,13 @@ export default async function ResultPage({ params }: Params) {
     .limit(1);
   const listing = listingRows[0];
 
+  const alertRows = await db
+    .select()
+    .from(schema.alertsSent)
+    .where(eq(schema.alertsSent.diagnosisId, id))
+    .limit(1);
+  const alert = alertRows[0];
+
   return (
     <main style={{ maxWidth: "var(--content-max)", margin: "0 auto", padding: "var(--s-6) var(--gutter)" }}>
       <div className="t-small" style={{ color: "var(--ink-500)", marginBottom: "var(--s-2)" }}>
@@ -38,6 +46,12 @@ export default async function ResultPage({ params }: Params) {
         <div>
           <ScoreCard score={d.overallScore} />
           <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
+          <AlertBar
+            score={d.overallScore}
+            alertSent={!!alert}
+            alertEmailTo={alert?.emailTo ?? process.env.ALERT_EMAIL_TO ?? "(未設定)"}
+            diagnosisId={id}
+          />
         </div>
         <div className="result-report">
           <AIReport

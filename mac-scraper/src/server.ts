@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import { generateReport } from "./ai/claude-agent.js";
 import { fetchPdpHtml } from "./airbnb/fetch-pdp.js";
 import { parseDeferredState } from "./airbnb/parse-deferred.js";
 import { extractSnapshot } from "./airbnb/extract.js";
@@ -84,6 +85,33 @@ export function createApp() {
       reviews: reviewsScore,
     });
 
+    const ai = await generateReport(
+      snapshot,
+      {
+        photos: photosScore,
+        title: titleScore,
+        description: descScore,
+        amenities: amenScore,
+        reviews: reviewsScore,
+      },
+      reviewList,
+    );
+
+    const aiBlock =
+      ai.status === "ok"
+        ? {
+            report_md: ai.data.report_md,
+            negative_keywords: ai.data.negative_keywords,
+            top3: ai.data.top3,
+            status: "ok" as const,
+          }
+        : {
+            report_md: "AI 分析は現在利用できません。後ほどお試しください。",
+            negative_keywords: [],
+            top3: [],
+            status: "fallback" as const,
+          };
+
     const diagnosis: Diagnosis = {
       listing_id: listingId,
       title: snapshot.title ?? listingId,
@@ -98,12 +126,7 @@ export function createApp() {
       overall_score: agg.overall_score,
       grade: agg.grade,
       quality_status: agg.quality_status,
-      ai: {
-        report_md: "Plan 3 で AI レポートを実装します。",
-        negative_keywords: [],
-        top3: [],
-        status: "fallback",
-      },
+      ai: aiBlock,
       scrape_status: !reviews.ok ? "partial" : "ok",
     };
 

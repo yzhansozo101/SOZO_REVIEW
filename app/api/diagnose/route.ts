@@ -25,7 +25,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid_url" }, { status: 400 });
   }
 
-  const scraped = await fetchDiagnosis(parsed.data.url);
+  // Plan 3 note: real Claude AI call can take 30-60s; bump from 45s default.
+  // Plan 4 polish should revisit (Vercel Hobby caps at 60s — we'll need to optimize prompt).
+  const scraped = await fetchDiagnosis(parsed.data.url, { timeoutMs: 120_000 });
   if (!scraped.ok) {
     const status = scraped.error === "timeout" ? 504 : 502;
     return NextResponse.json({ error: scraped.error }, { status });

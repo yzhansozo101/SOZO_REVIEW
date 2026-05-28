@@ -4,7 +4,9 @@ import { db, schema } from "@/lib/db/client";
 import { AIReport } from "@/components/AIReport";
 import { AlertBar } from "@/components/AlertBar";
 import { DimensionGrid } from "@/components/DimensionGrid";
+import { QualityStatusLadder } from "@/components/QualityStatusLadder";
 import { ScoreCard } from "@/components/ScoreCard";
+import type { QualityStatus } from "@/lib/util/quality";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -45,6 +47,7 @@ export default async function ResultPage({ params }: Params) {
       <div className="result-grid">
         <div>
           <ScoreCard score={d.overallScore} />
+          <QualityStatusLadder current={(d.qualityStatus as QualityStatus) ?? "Good"} />
           <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
           <AlertBar
             score={d.overallScore}

@@ -58,7 +58,7 @@ export function DimensionGrid({ dimensions }: Props) {
           primaryStat={`${dimensions.description.length ?? 0} 文字`}
           note={
             dimensions.description.sections_hit?.length
-              ? `主要章節 ${dimensions.description.sections_hit.length}/6`
+              ? `主要章節✓ ${dimensions.description.sections_hit.length}/6`
               : "章節カバレッジ不足"
           }
         />

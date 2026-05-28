@@ -507,7 +507,7 @@ function buildF7Html({ alertEmailTo }: { alertEmailTo: string }) {
         </table>
 
         <p class="mail-preview-foot">
-          次回 自動送信: <b>来週月曜日 09:00</b> (毎週月曜 09:00)
+          ※ デモ段階では定時送信なし。本プレビューは手動「テスト送信」の確認用です。
         </p>
       </div>
     </article>

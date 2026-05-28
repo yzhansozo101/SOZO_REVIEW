@@ -31,6 +31,17 @@ export const ja = {
       amenities: { label: "設備", placeholder: "" },
       reviews: { label: "レビュー", placeholder: "" },
     },
+    qualityStatus: {
+      Good: { label: "健全", desc: "品質問題はありません" },
+      Educate: { label: "指導", desc: "1 件の品質指摘あり" },
+      Warn: { label: "警告", desc: "複数の品質問題、要対応" },
+      Probation: { label: "保留", desc: "繰り返し問題あり、削除リスク" },
+      "Additional Warn": { label: "追加警告", desc: "累積過多" },
+      "Pending Removal": { label: "削除予定", desc: "30 日後に削除" },
+      Suspended: { label: "一時停止", desc: "現在停止中" },
+      Removed: { label: "削除済み", desc: "既に削除されました" },
+      reference: "※ Airbnb の内部判定とは異なる参考値です",
+    },
   },
 } as const;
 

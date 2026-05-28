@@ -156,6 +156,9 @@ POST /api/diagnose { url }       ← Vercel 60s 予算
 
 ## 11. 必ず守る / やってはいけないこと
 
+**プロジェクトルール(`.claude/rules/` 配下、すべて必読・必遵守):**
+- [`.claude/rules/never-inline-secrets.md`](.claude/rules/never-inline-secrets.md) — plan/コード/コミット文に **本物の token / password / API key を絶対書かない**。`<placeholder>` を使い、実値は `.env.local`(gitignore)か Vercel 環境変数のみ
+
 **守る**:
 - 仕様変更は必ずユーザー確認。SPEC/SYSTEM_DESIGN/ADR は許可無く編集しない
 - v0.4 デルタ(§6)を反映していない prototype のコピペを残さない

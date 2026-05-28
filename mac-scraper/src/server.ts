@@ -6,6 +6,7 @@ import { fetchPdpHtml } from "./airbnb/fetch-pdp.js";
 import { parseDeferredState } from "./airbnb/parse-deferred.js";
 import { extractSnapshot } from "./airbnb/extract.js";
 import { fetchReviews } from "./airbnb/fetch-reviews.js";
+import { detectLocales, hashDescription } from "./airbnb/locales.js";
 import { bearerAuth } from "./auth.js";
 import { log } from "./log.js";
 import { scorePhotos } from "./score/photos.js";
@@ -56,6 +57,8 @@ export function createApp() {
     }
 
     const snapshot = extractSnapshot(parsedDeferred.data, listingId);
+    const jaHash = snapshot.description_text ? hashDescription(snapshot.description_text) : "";
+    const locales = jaHash ? await detectLocales(url, jaHash) : ["ja"];
 
     let reviews: Awaited<ReturnType<typeof fetchReviews>> = { ok: true, reviews: [] };
     if (snapshot.api_key && snapshot.reviews_persisted_hash) {
@@ -68,7 +71,7 @@ export function createApp() {
     const reviewList = reviews.ok ? reviews.reviews : [];
 
     const photosScore = scorePhotos(snapshot.photos);
-    const descScore = scoreDescription(snapshot.description_text ?? "");
+    const descScore = scoreDescription(snapshot.description_text ?? "", locales);
     const amenScore = scoreAmenities(snapshot.amenities, snapshot.description_text ?? "");
     const reviewsScore = scoreReviews(snapshot.rating, reviewList);
     const titleScore = { score: 70 };

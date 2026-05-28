@@ -12,9 +12,21 @@ export type DescriptionScore = {
   length: number;
   sections_hit: string[];
   sections_missing: string[];
+  locales: string[];
+  b8_status: "ok" | "missing_critical";
 };
 
-export function scoreDescription(text: string): DescriptionScore {
+type DescriptionScoreBase = Omit<DescriptionScore, "locales" | "b8_status">;
+
+function withLocaleStatus(result: DescriptionScoreBase, locales: string[]): DescriptionScore {
+  const hasJa = locales.includes("ja");
+  const hasEn = locales.includes("en");
+  const b8_status: DescriptionScore["b8_status"] = hasJa && hasEn ? "ok" : "missing_critical";
+
+  return { ...result, locales, b8_status };
+}
+
+export function scoreDescription(text: string, locales: string[] = ["ja"]): DescriptionScore {
   const length = text.length;
   const hits: string[] = [];
   const missing: string[] = [];
@@ -28,14 +40,14 @@ export function scoreDescription(text: string): DescriptionScore {
   }
 
   if (length === 0) {
-    return { score: 5, length, sections_hit: hits, sections_missing: missing };
+    return withLocaleStatus({ score: 5, length, sections_hit: hits, sections_missing: missing }, locales);
   }
   if (length >= 800 && hits.length >= 5) {
-    return { score: 95, length, sections_hit: hits, sections_missing: missing };
+    return withLocaleStatus({ score: 95, length, sections_hit: hits, sections_missing: missing }, locales);
   }
   if (length >= 400 || hits.length >= 3) {
-    return { score: 75, length, sections_hit: hits, sections_missing: missing };
+    return withLocaleStatus({ score: 75, length, sections_hit: hits, sections_missing: missing }, locales);
   }
 
-  return { score: 45, length, sections_hit: hits, sections_missing: missing };
+  return withLocaleStatus({ score: 45, length, sections_hit: hits, sections_missing: missing }, locales);
 }

@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  id-token: write
 
 jobs:
   describe:
@@ -30,7 +31,7 @@ jobs:
           # (not pay-per-token API). Generate locally with `claude setup-token`
           # then add as repo secret CLAUDE_CODE_OAUTH_TOKEN.
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          direct_prompt: |
+          prompt: |
             Generate a pull request description for the SOZO Review project
             and update the PR body via `gh pr edit`.
 

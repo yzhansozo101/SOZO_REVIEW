@@ -13,6 +13,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
+  id-token: write
 
 jobs:
   review:
@@ -32,7 +33,7 @@ jobs:
           # (not pay-per-token API). Generate locally with `claude setup-token`
           # then add as repo secret CLAUDE_CODE_OAUTH_TOKEN.
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          direct_prompt: |
+          prompt: |
             You are reviewing a pull request on the SOZO Review project
             (Airbnb listing health diagnostic, demo phase).
 

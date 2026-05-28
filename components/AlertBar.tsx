@@ -54,10 +54,10 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s-2)", alignItems: "center" }}>
           <button type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
-            F1 プレビュー
+            アラートメール プレビュー
           </button>
           <button type="button" style={buttonStyle} onClick={() => setPreview("f7")}>
-            F7 プレビュー
+            週次サマリー プレビュー
           </button>
           <form action="/api/weekly/test" method="POST">
             <input type="hidden" name="diagnosisId" value={diagnosisId} />

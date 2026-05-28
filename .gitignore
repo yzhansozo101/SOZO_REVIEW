@@ -2,6 +2,7 @@
 .claude/*
 !.claude/skills/
 !.claude/hooks/
+!.claude/rules/
 !.claude/settings.json
 .claude/settings.local.json
 node_modules/
@@ -10,3 +11,19 @@ node_modules/
 *.log
 .vscode/
 .idea/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Env
+.env.*.local
+
+# Mac scraper
+mac-scraper/node_modules/
+mac-scraper/dist/
+mac-scraper/.env
+
+# pnpm local store (created when global store isn't writable, e.g. sandbox runs)
+.pnpm-store/

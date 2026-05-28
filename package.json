@@ -14,13 +14,17 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "@react-email/components": "^1.0.12",
+    "@react-pdf/renderer": "^4.5.1",
     "drizzle-orm": "^0.45.2",
     "next": "15.1.4",
     "next-intl": "^3.26.5",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "^10.1.0",
+    "recharts": "^3.8.1",
     "remark-gfm": "^4.0.1",
+    "resend": "^6.12.4",
     "zod": "^4.4.3"
   },
   "devDependencies": {

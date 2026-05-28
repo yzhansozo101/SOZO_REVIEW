@@ -1,16 +1,18 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { PdfDownloadButton } from "./PdfDownloadButton";
 import { Top3Priorities } from "./Top3Priorities";
 import { NegativeKeywords } from "./NegativeKeywords";
 
 type Props = {
+  diagnosisId: string;
   reportMd: string | null;
   top3: Array<{ issue: string; action: string; impact: string }>;
   negativeKeywords: Array<{ keyword: string; count: number; quote: string }>;
   status: "ok" | "fallback";
 };
 
-export function AIReport({ reportMd, top3, negativeKeywords, status }: Props) {
+export function AIReport({ diagnosisId, reportMd, top3, negativeKeywords, status }: Props) {
   return (
     <aside
       style={{
@@ -33,11 +35,14 @@ export function AIReport({ reportMd, top3, negativeKeywords, status }: Props) {
         <h2 className="t-h2" style={{ margin: 0 }}>
           AI レポート
         </h2>
-        {status === "fallback" && (
-          <span className="t-small" style={{ color: "var(--grade-c-ink)" }}>
-            ※ AI 出力フォールバック
-          </span>
-        )}
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--s-3)" }}>
+          {status === "fallback" && (
+            <span className="t-small" style={{ color: "var(--grade-c-ink)" }}>
+              ※ AI 出力フォールバック
+            </span>
+          )}
+          <PdfDownloadButton diagnosisId={diagnosisId} />
+        </div>
       </header>
 
       <article className="t-editorial">

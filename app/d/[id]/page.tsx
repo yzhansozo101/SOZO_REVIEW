@@ -41,6 +41,7 @@ export default async function ResultPage({ params }: Params) {
         </div>
         <div className="result-report">
           <AIReport
+            diagnosisId={id}
             reportMd={d.aiReportMd}
             top3={(d.aiTop3 as Parameters<typeof AIReport>[0]["top3"] | null) ?? []}
             negativeKeywords={(d.aiNegativeKw as Parameters<typeof AIReport>[0]["negativeKeywords"] | null) ?? []}

@@ -28,7 +28,10 @@ jobs:
       - name: Claude security audit
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Uses Claude Code Enterprise/Pro subscription via long-lived OAuth token
+          # (not pay-per-token API). Generate locally with `claude setup-token`
+          # then add as repo secret CLAUDE_CODE_OAUTH_TOKEN.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           direct_prompt: |
             You are running a security audit on a pull request for SOZO Review.
 

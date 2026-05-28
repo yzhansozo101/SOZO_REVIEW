@@ -4,6 +4,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ja } from "@/lib/i18n/ja";
+import { ProgressView } from "./ProgressView";
 
 type ErrorKey = keyof typeof ja.form.errors;
 
@@ -31,6 +32,7 @@ export function DiagnosticForm() {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
+    let shouldResetSubmitting = true;
 
     try {
       const res = await fetch("/api/diagnose", {
@@ -48,13 +50,16 @@ export function DiagnosticForm() {
       }
 
       const body = (await res.json()) as { redirect: string };
+      shouldResetSubmitting = false;
       router.push(body.redirect as never);
     } catch {
       setError("scrape_failed");
     } finally {
-      setSubmitting(false);
+      if (shouldResetSubmitting) setSubmitting(false);
     }
   }
+
+  if (submitting) return <ProgressView />;
 
   return (
     <form

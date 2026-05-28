@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { and, desc, eq, ne } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
 import { AIReport } from "@/components/AIReport";
 import { AlertBar } from "@/components/AlertBar";
+import { DiffArrow } from "@/components/DiffArrow";
 import { DimensionGrid } from "@/components/DimensionGrid";
 import { QualityStatusLadder } from "@/components/QualityStatusLadder";
 import { ScoreCard } from "@/components/ScoreCard";
@@ -23,6 +24,14 @@ export default async function ResultPage({ params }: Params) {
 
   const d = rows[0];
   if (!d) notFound();
+
+  const previousRows = await db
+    .select({ score: schema.diagnoses.overallScore })
+    .from(schema.diagnoses)
+    .where(and(eq(schema.diagnoses.listingId, d.listingId), ne(schema.diagnoses.id, d.id)))
+    .orderBy(desc(schema.diagnoses.createdAt))
+    .limit(1);
+  const previousScore = previousRows[0]?.score ?? null;
 
   const listingRows = await db
     .select()
@@ -47,7 +56,12 @@ export default async function ResultPage({ params }: Params) {
 
       <div className="result-grid">
         <div>
-          <ScoreCard score={d.overallScore} />
+          <div style={{ display: "grid", gap: "var(--s-2)" }}>
+            <ScoreCard score={d.overallScore} />
+            <div style={{ display: "flex", justifyContent: "flex-end", paddingRight: "var(--s-1)" }}>
+              <DiffArrow current={d.overallScore} previous={previousScore} />
+            </div>
+          </div>
           <QualityStatusLadder current={(d.qualityStatus as QualityStatus) ?? "Good"} />
           <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
           <TrendChart current={d.overallScore} />

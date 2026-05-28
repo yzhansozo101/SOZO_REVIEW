@@ -6,6 +6,7 @@ import { AlertBar } from "@/components/AlertBar";
 import { DimensionGrid } from "@/components/DimensionGrid";
 import { QualityStatusLadder } from "@/components/QualityStatusLadder";
 import { ScoreCard } from "@/components/ScoreCard";
+import { TrendChart } from "@/components/TrendChart";
 import type { QualityStatus } from "@/lib/util/quality";
 
 type Params = { params: Promise<{ id: string }> };
@@ -49,6 +50,7 @@ export default async function ResultPage({ params }: Params) {
           <ScoreCard score={d.overallScore} />
           <QualityStatusLadder current={(d.qualityStatus as QualityStatus) ?? "Good"} />
           <DimensionGrid dimensions={d.dimensions as Parameters<typeof DimensionGrid>[0]["dimensions"]} />
+          <TrendChart current={d.overallScore} />
           <AlertBar
             score={d.overallScore}
             alertSent={!!alert}

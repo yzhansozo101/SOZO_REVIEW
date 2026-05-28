@@ -1,0 +1,69 @@
+name: Claude · PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to review"
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    if: github.event.pull_request.draft == false || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude Code review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            You are reviewing a pull request on the SOZO Review project
+            (Airbnb listing health diagnostic, demo phase).
+
+            ## Project context (read these first)
+
+            - `CLAUDE.md` — project overview, rules, branch policy
+            - `.claude/rules/never-inline-secrets.md` — must-follow rule
+            - `SPEC_房源诊断系统_需求v0.4.md` — PRD
+            - `SYSTEM_DESIGN_v0.2.md` — architecture
+            - `ADR.md` — architecture decisions
+            - `docs/superpowers/plans/phase*-status.md` — what is already done per phase
+
+            ## What to review
+
+            1. **Correctness vs SPEC v0.4** — does the diff match the relevant
+               spec section? Flag any drift.
+            2. **TypeScript type safety** — no implicit `any`, no `as unknown as X`
+               without justification, no untyped JSON parses.
+            3. **Error handling** — every async/fetch path has a fallback; no
+               unhandled promise rejections; HTTP failures map to proper status.
+            4. **Test coverage** — new business logic (scoring / parsing / AI
+               wrapper) must have TDD tests. UI components can rely on `pnpm build`.
+            5. **v0.4 deltas integrity** — UI 日本語 / B7 文字数+章節 / A5
+               ※参考値 脚注 / F7 mock copy (no scheduler).
+            6. **No regression of `.claude/rules/never-inline-secrets.md`** —
+               no real tokens, passwords, API keys, connection strings in diff.
+
+            ## How to comment
+
+            - Inline comments on specific lines for actionable items.
+            - One PR-level summary comment at the end:
+              - ✅ What looks good
+              - ⚠️ Blocking concerns (must fix before merge)
+              - 💡 Nice-to-have suggestions
+            - Match codebase language (mostly 日本語 in UI strings, 中文/英文 in code/docs).
+            - Be concise. Skip nitpicks. Only mention what materially affects
+              demo readiness or correctness.

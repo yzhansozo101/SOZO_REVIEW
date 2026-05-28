@@ -1,0 +1,77 @@
+name: Claude · Security Audit
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to audit (optional)"
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  security-events: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Claude security audit
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          direct_prompt: |
+            You are running a security audit on a pull request for SOZO Review.
+
+            ## The non-negotiable rule
+
+            Read `.claude/rules/never-inline-secrets.md` first. Any violation
+            blocks the merge. Specifically scan the diff for:
+
+            - Database connection strings with real passwords (`npg_`, `postgres://...:<pwd>@`)
+            - API keys (`sk-`, `re_`, `pk_`, `csk_`, `xoxb-`, `AKIA`, `eyJ` JWTs)
+            - OAuth tokens / refresh tokens
+            - Service account JSON
+            - Bearer tokens, webhook signing secrets, cookies with auth data
+            - Anything resembling a long random string with a credential-like prefix
+
+            If found, post a **blocking** PR comment naming the file + line and
+            instructing the author to (1) rotate the credential immediately,
+            (2) replace with `<PLACEHOLDER>`, (3) use `.env.local` (gitignored)
+            or Vercel env vars for the real value.
+
+            ## Other security checks
+
+            1. **SQL injection** — any string-concat into SQL outside Drizzle's
+               parameterized API (`sql\`...\`` tagged template or `.values(...)`).
+               Esp. in `lib/db/`, `app/api/`, `mac-scraper/src/`.
+            2. **Input validation** — URL input to `/api/diagnose` flows through
+               `parseAirbnbUrl` before any fetch. Webhook / form bodies validated
+               with zod.
+            3. **Auth boundary** — `mac-scraper` `POST /diagnose` must still
+               require `Authorization: Bearer ${SCRAPER_SECRET}`. Don't accept
+               unauthenticated calls.
+            4. **Outbound fetch surface** — any `fetch()` to user-controlled URL
+               must be scoped (e.g., only `airbnb.{tld}/rooms/{id}`).
+            5. **Email recipient** — `ALERT_EMAIL_TO` env (test address) must
+               never be replaced by hard-coded production recipient.
+            6. **PDF / email** — no XSS / template-injection in user-supplied
+               text (titles, descriptions) when rendered via react-pdf / react-email.
+
+            ## How to report
+
+            - 🚨 Critical: anything in §1 (secrets) — post a blocking comment.
+            - ⚠️  High: SQL injection, auth bypass, hard-coded prod recipient.
+            - ℹ️  Info: defense-in-depth suggestions.
+            - ✅ All clear: post a single approval comment if no issues.
+
+            Always cite the file path + line number for findings.

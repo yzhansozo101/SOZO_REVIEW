@@ -16,8 +16,9 @@ There is no FAQ section today. `docs/system-design-geo.md` explicitly deferred `
 ## Goals
 
 - Add a visible homepage FAQ section in Japanese.
-- Include light English and Chinese brand recognition through the existing multilingual brand area, not by duplicating the full FAQ.
+- Include light English and Chinese brand recognition through the existing multilingual brand area and JSON-LD aliases, not by duplicating the full FAQ.
 - Add matching `FAQPage` JSON-LD to the homepage graph.
+- Strengthen "SOZONEXT" and "SOZONEXT Review" entity recognition across Japanese, English, and Chinese queries.
 - Keep FAQ answers factual, demo-safe, and consistent with current product behavior.
 - Avoid claiming Airbnb official affiliation or guaranteed search-ranking improvements.
 
@@ -40,24 +41,45 @@ This is preferred over a separate FAQ page because the site currently has one pu
 The visible FAQ should contain six Japanese Q&A items:
 
 1. `SOZONEXT Review とは何ですか？`
-   - Answer: SOZONEXT's Airbnb listing health-check tool for diagnosing public listing information and producing improvement reports.
+   - Answer: `SOZONEXT Review は、SOZONEXT が提供する Airbnb 物件の健康診断ツールです。公開されている Airbnb 物件 URL をもとに、リスティングの状態を確認し、改善レポートを日本語で提示します。`
 
 2. `どのような項目を診断しますか？`
-   - Answer: Photos, title, description, amenities, and reviews; the result is shown as a five-dimension score and Japanese AI report.
+   - Answer: `写真、タイトル、紹介文、設備、レビューの 5 維度を診断します。結果は総合スコア、各項目の評価、AI 改善レポート、PDF レポートとして確認できます。`
 
 3. `Airbnb の公式評価と同じですか？`
-   - Answer: No. It is not Airbnb's internal or official judgment. It is a reference score for operation improvement based on public information.
+   - Answer: `いいえ。SOZONEXT Review の Quality Status やスコアは、Airbnb の内部判定や公式評価ではありません。公開情報をもとにした、運営改善のための参考値です。`
 
 4. `Airbnb アカウントへのログインは必要ですか？`
-   - Answer: No. A public Airbnb listing URL is enough for the demo; no host account permission is required.
+   - Answer: `ログインは不要です。デモでは公開されている Airbnb 物件 URL を入力するだけで診断できます。ホストアカウントの権限やパスワードは必要ありません。`
 
 5. `検索順位やスーパーホスト維持に役立ちますか？`
-   - Answer: It can help identify improvement actions for photos, titles, descriptions, amenities, and review quality, but it does not guarantee search ranking or badge outcomes.
+   - Answer: `写真、タイトル、紹介文、設備、レビュー品質の改善ポイントを見つけることで、Airbnb 検索順位の改善やスーパーホスト維持に向けた運営改善の参考になります。ただし、検索順位やバッジ獲得を保証するものではありません。`
 
 6. `料金はかかりますか？`
-   - Answer: The demo is free to use. The current architecture is designed around the project's zero monthly cost constraint.
+   - Answer: `現在のデモは無料で利用できます。SOZONEXT Review は、Vercel、Neon、Resend などの無料枠を活用し、月額コスト 0 円の構成を前提にしています。`
 
 The English and Chinese brand snippets remain separate, small, and subdued. They should continue to identify SOZONEXT Review cross-language, without translating the full FAQ.
+
+### Cross-Language Brand Reinforcement
+
+Do not repeat "SOZONEXT" mechanically. Add entity signals where they are natural:
+
+- Keep `SOZONEXT Review` in the first and third FAQ answers.
+- Keep `SOZONEXT` in the visible "About" and multilingual sections.
+- Strengthen English snippet:
+  - `SOZONEXT Review, also known as SOZO Review, is an Airbnb listing health check tool by SOZONEXT, a Japanese hospitality operations company.`
+- Strengthen Chinese snippet:
+  - `SOZONEXT Review，也可称为 SOZO Review，是 SOZONEXT 推出的 Airbnb 房源健康诊断工具。SOZONEXT 是一家日本民泊运营服务公司。`
+- Add JSON-LD `alternateName` fields for brand/entity matching:
+  - Organization:
+    - `SOZONEXT`
+    - `SOZO NEXT`
+  - WebApplication:
+    - `SOZO Review`
+    - `SOZONEXT Review`
+    - `SOZONEXT レビュー`
+    - `SOZONEXT Airbnb listing health check`
+    - `SOZONEXT Airbnb 房源健康诊断`
 
 ## Architecture
 
@@ -85,9 +107,8 @@ The English and Chinese brand snippets remain separate, small, and subdued. They
 ### Structured Data
 
 - Update `lib/schema.ts`
-  - Import or duplicate the FAQ item data from a shared place.
-  - Prefer placing FAQ content in `components/marketing/Faq.tsx` only if it does not create an undesirable schema-to-component dependency.
-  - Better boundary: create `lib/marketing/faq.ts` with `FAQ_ITEMS`, then import it from both `Faq.tsx` and `lib/schema.ts`.
+  - Create `lib/marketing/faq.ts` with `FAQ_ITEMS`, then import it from both `Faq.tsx` and `lib/schema.ts`.
+  - Add `alternateName` to `Organization` and `WebApplication` for Japanese, English, and Chinese brand discovery.
   - Add a fourth graph node:
     - `@type`: `FAQPage`
     - `@id`: `https://sozonext-review.vercel.app/#faq`
@@ -131,9 +152,11 @@ Update or add tests:
   - Expects `FAQPage.mainEntity` to include six questions.
   - Expects one answer to state that the score is not Airbnb's official judgment.
   - Expects one answer to avoid guaranteed ranking language.
+  - Expects `WebApplication.alternateName` to include `SOZO Review`, `SOZONEXT レビュー`, and `SOZONEXT Airbnb 房源健康诊断`.
 
 - Optional lightweight component test only if current testing patterns make it cheap:
   - Render `Faq` and assert the section heading and at least one question are visible.
+  - Render `MultilingualBrandSnippets` and assert the English and Chinese brand aliases are visible.
 
 Verification commands:
 
@@ -145,6 +168,8 @@ Verification commands:
 - Homepage visibly includes a Japanese FAQ section.
 - Homepage HTML includes `FAQPage` JSON-LD inside the existing `application/ld+json` script.
 - FAQ visible text and JSON-LD answers use the same source content.
+- JSON-LD includes cross-language `alternateName` values for SOZONEXT Review brand discovery.
+- English and Chinese snippets mention both `SOZONEXT Review` and `SOZO Review` naturally.
 - No answer claims official Airbnb status or guaranteed search-ranking improvement.
 - Tests and production build pass.
 

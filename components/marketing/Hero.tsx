@@ -30,7 +30,7 @@ export function Hero() {
           lineHeight: 1.1,
         }}
       >
-        Airbnb 物件の 健康診断を 25 秒で。
+        Airbnb リスティング診断
       </h1>
       <p
         style={{

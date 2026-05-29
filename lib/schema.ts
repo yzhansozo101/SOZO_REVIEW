@@ -40,7 +40,7 @@ const webApplication = {
   operatingSystem: "Web",
   publisher: { "@id": ORG_ID },
   description:
-    "Airbnb 物件の URL から 25 秒で 5 維度評価と AI 改善レポート。スーパーホスト維持や Airbnb 検索順位向上を目指す民泊運営者向け。",
+    "Airbnb リスティング診断ツール。リスティング URL から 25 秒で 5 維度評価と AI 改善レポート。スーパーホスト維持や Airbnb 検索順位向上を目指す民泊運営者向け。",
   inLanguage: "ja-JP",
   offers: {
     "@type": "Offer",

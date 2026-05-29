@@ -28,3 +28,7 @@ mac-scraper/.env
 # pnpm local store (created when global store isn't writable, e.g. sandbox runs)
 .pnpm-store/
 .vercel
+
+# Python bytecode (e.g. from .claude/skills/ui-ux-pro-max scripts)
+__pycache__/
+*.pyc

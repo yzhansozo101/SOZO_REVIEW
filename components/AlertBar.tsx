@@ -22,7 +22,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
     : `評価健全(${score} 点 >= 60)、アラートはトリガーされていません`;
 
   const buttonStyle = {
-    padding: "6px 12px",
+    padding: "10px 16px",
     background: "var(--card)",
     border: "1px solid var(--ink-200)",
     borderRadius: "var(--r-md)",
@@ -30,6 +30,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
     fontSize: "var(--t-sm)",
     color: "var(--ink-800)",
     fontFamily: "var(--font-sans)",
+    transition: "background var(--t-fast) var(--ease-out)",
   } as const;
 
   return (
@@ -49,19 +50,35 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
         <div className="t-small" style={{ color: "inherit" }}>
           デモ段階では定時送信なし。週次サマリーは手動テスト送信のみです。
         </div>
-        <div className="t-small" style={{ color: "inherit" }}>
+        <div
+          className="t-small"
+          data-testid="alert-bar-mock-schedule"
+          data-mock="true"
+          style={{
+            color: "inherit",
+            background: "var(--ink-50)",
+            border: "1px dashed var(--ink-200)",
+            borderRadius: "var(--r-sm)",
+            padding: "6px 10px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "var(--s-2)",
+            fontStyle: "italic",
+          }}
+        >
+          <span aria-hidden="true">ⓘ</span>
           次回自動送信予定: 来週月曜 09:00(デモ表示)
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s-2)", alignItems: "center" }}>
-          <button type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
+          <button className="alert-bar-button" type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
             アラートメール プレビュー
           </button>
-          <button type="button" style={buttonStyle} onClick={() => setPreview("f7")}>
+          <button className="alert-bar-button" type="button" style={buttonStyle} onClick={() => setPreview("f7")}>
             週次サマリー プレビュー
           </button>
           <form action="/api/weekly/test" method="POST">
             <input type="hidden" name="diagnosisId" value={diagnosisId} />
-            <button type="submit" style={buttonStyle}>
+            <button className="alert-bar-button" type="submit" style={buttonStyle}>
               🧪 週次サマリーを今すぐテスト送信
             </button>
           </form>
@@ -77,6 +94,16 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
           onClose={() => setPreview(null)}
         />
       )}
+      <style jsx>{`
+        .alert-bar-button:hover {
+          background: var(--ink-50);
+        }
+
+        .alert-bar-button:focus-visible {
+          outline: none;
+          box-shadow: var(--shadow-focus);
+        }
+      `}</style>
     </>
   );
 }

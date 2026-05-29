@@ -4,6 +4,12 @@ Airbnb 物件の健康診断 web アプリ。URL を貼り付けると 5 維度�
 
 **Status**: demo phase, 4 plans complete (foundation → real scraping → Claude Agent SDK → email/PDF/polish). SPEC §8 受け入れ条件全通。
 
+## Live demo
+
+Production: [https://sozonext-review.vercel.app/](https://sozonext-review.vercel.app/)
+
+This Vercel deployment is the public demo URL for SOZONEXT Review. It includes the Airbnb listing diagnosis entry point plus GEO/SEO discovery metadata for Bing and AI crawlers.
+
 ## Quick start
 
 ```bash

@@ -1,10 +1,10 @@
 export const ja = {
   app: {
-    title: "SOZO Review · 物件ヘルスチェック",
-    description: "Airbnb 物件の健康診断システム",
+    title: "SOZO Review · Airbnb リスティング診断",
+    description: "Airbnb リスティング診断システム",
   },
   form: {
-    eyebrow: "物件ヘルスチェック",
+    eyebrow: "Airbnb リスティング診断",
     headline: "Airbnb 物件 URL を入力してください",
     placeholder: "https://www.airbnb.jp/rooms/...",
     submit: "診断する",

@@ -4,10 +4,10 @@ import { homepageGraph, SITE_URL } from "../lib/schema";
 describe("homepageGraph (JSON-LD)", () => {
   const graph = homepageGraph();
 
-  it("contains exactly 3 nodes: Organization + WebSite + WebApplication", () => {
-    expect(graph).toHaveLength(3);
+  it("contains exactly 4 nodes: Organization + WebSite + WebApplication + FAQPage", () => {
+    expect(graph).toHaveLength(4);
     const types = graph.map((n) => (n as { "@type": string })["@type"]);
-    expect(types).toEqual(["Organization", "WebSite", "WebApplication"]);
+    expect(types).toEqual(["Organization", "WebSite", "WebApplication", "FAQPage"]);
   });
 
   it("Organization has SOZONEXT name + site URL", () => {
@@ -36,6 +36,41 @@ describe("homepageGraph (JSON-LD)", () => {
     expect(app.description).toContain("5 維度評価");
     expect(app.description).toContain("スーパーホスト維持");
     expect(app.description).toContain("Airbnb 検索順位");
+  });
+
+  it("WebApplication has cross-language alternate names", () => {
+    const app = graph[2] as { alternateName: readonly string[] };
+
+    expect(app.alternateName).toEqual(
+      expect.arrayContaining([
+        "SOZO Review",
+        "SOZONEXT Review",
+        "SOZONEXT レビュー",
+        "SOZONEXT Airbnb listing health check",
+        "SOZONEXT Airbnb 房源健康诊断",
+      ])
+    );
+  });
+
+  it("FAQPage mirrors the visible FAQ content", () => {
+    const faq = graph[3] as {
+      "@type": string;
+      "@id": string;
+      mainEntity: readonly {
+        "@type": string;
+        name: string;
+        acceptedAnswer: { "@type": string; text: string };
+      }[];
+    };
+
+    expect(faq["@type"]).toBe("FAQPage");
+    expect(faq["@id"]).toBe(`${SITE_URL}/#faq`);
+    expect(faq.mainEntity).toHaveLength(6);
+    expect(faq.mainEntity[0].name).toBe("SOZONEXT Review とは何ですか？");
+    expect(faq.mainEntity[2].acceptedAnswer.text).toContain(
+      "Airbnb の内部判定や公式評価ではありません"
+    );
+    expect(faq.mainEntity[4].acceptedAnswer.text).toContain("保証するものではありません");
   });
 
   it("returns same content on repeated calls (referential safety)", () => {

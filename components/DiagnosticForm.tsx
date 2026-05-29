@@ -8,6 +8,10 @@ import { ProgressView } from "./ProgressView";
 
 type ErrorKey = keyof typeof ja.form.errors;
 
+// TODO(demo): swap to a real, stable Airbnb listing URL the boss can demo with.
+// Numeric ID is a placeholder — won't return a valid result until replaced.
+const SAMPLE_URL = "https://www.airbnb.jp/rooms/12345678";
+
 const fieldBase = {
   flex: 1,
   display: "flex",
@@ -67,23 +71,23 @@ export function DiagnosticForm() {
       style={{
         width: "min(760px, calc(100vw - 32px))",
         margin: "0 auto",
-        padding: "var(--s-8) 0 var(--s-7)",
+        padding: "var(--s-4) 0 var(--s-6)",
       }}
     >
-      <p className="t-eyebrow" style={{ margin: "0 0 18px" }}>
-        {ja.form.eyebrow}
-      </p>
-      <h1
-        className="t-h1"
+      {/* Hero (components/marketing/Hero.tsx) owns the eyebrow + h1 above.
+          The form is "the tool" — no competing title. */}
+      <label
+        htmlFor="airbnb-url"
+        className="t-small"
         style={{
-          maxWidth: 680,
-          margin: "0 0 var(--s-6)",
-          fontSize: "clamp(32px, 6vw, 48px)",
-          lineHeight: 1.1,
+          display: "block",
+          margin: "0 0 8px",
+          color: "var(--ink-600)",
+          fontWeight: "var(--w-medium)",
         }}
       >
-        {ja.form.headline}
-      </h1>
+        Airbnb 物件 URL
+      </label>
 
       <div style={{ display: "flex", gap: "var(--s-3)", alignItems: "stretch" }}>
         <label
@@ -112,6 +116,7 @@ export function DiagnosticForm() {
             </svg>
           </span>
           <input
+            id="airbnb-url"
             type="url"
             value={url}
             onChange={(e) => {
@@ -120,7 +125,6 @@ export function DiagnosticForm() {
             }}
             placeholder={ja.form.placeholder}
             required
-            aria-label={ja.form.headline}
             aria-invalid={!!error}
             aria-describedby={error ? "diagnostic-form-error" : undefined}
             style={{
@@ -163,6 +167,29 @@ export function DiagnosticForm() {
           {ja.form.errors[error]}
         </p>
       )}
+
+      <div style={{ marginTop: "var(--s-2)" }}>
+        <button
+          type="button"
+          onClick={() => {
+            setUrl(SAMPLE_URL);
+            if (error) setError(null);
+          }}
+          style={{
+            color: "var(--sozonext-navy)",
+            background: "none",
+            border: 0,
+            padding: 0,
+            cursor: "pointer",
+            fontSize: 14,
+            fontFamily: "var(--font-sans)",
+            textDecoration: "underline",
+            textUnderlineOffset: 3,
+          }}
+        >
+          サンプル URL で試す →
+        </button>
+      </div>
     </form>
   );
 }

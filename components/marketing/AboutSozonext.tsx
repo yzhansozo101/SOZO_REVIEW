@@ -19,8 +19,11 @@ export function AboutSozonext() {
         className="t-h2"
         style={{
           margin: "0 0 var(--s-4)",
-          fontSize: 24,
-          letterSpacing: "0.02em",
+          fontSize: 28,
+          letterSpacing: "0.01em",
+          fontFamily:
+            "var(--font-newsreader), var(--font-noto-serif-jp), 'Noto Serif JP', serif",
+          fontWeight: 500,
         }}
       >
         SOZONEXT について
@@ -28,9 +31,11 @@ export function AboutSozonext() {
       <div
         style={{
           maxWidth: 680,
-          fontSize: 16,
-          lineHeight: 1.7,
+          fontSize: 17,
+          lineHeight: 1.8,
           color: "var(--ink-800)",
+          fontFamily:
+            "var(--font-newsreader), var(--font-noto-serif-jp), 'Noto Serif JP', serif",
         }}
       >
         <p style={{ margin: "0 0 var(--s-3)" }}>

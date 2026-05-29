@@ -125,6 +125,9 @@
   --shadow-card: 0 1px 2px rgba(14, 17, 22, 0.04), 0 8px 24px -8px rgba(14, 17, 22, 0.08);
   --shadow-pop:  0 4px 12px rgba(14, 17, 22, 0.06), 0 24px 48px -12px rgba(14, 17, 22, 0.16);
   --shadow-focus: 0 0 0 3px rgba(30, 42, 120, 0.18);
+  --shadow-focus-error: 0 0 0 3px rgba(199, 56, 43, 0.18);
+  --overlay-bg: rgba(14, 17, 22, 0.42);
+  --text-on-navy: var(--card);
 
   /* ===== Motion ===== */
   --ease-out:    cubic-bezier(0.2, 0, 0, 1);

@@ -33,10 +33,13 @@ describe("AlertBar", () => {
     expect(css).toMatch(/\.alert-bar-button:hover[^{]*\{[^}]*background:\s*var\(--ink-50\)\s*!important/);
   });
 
-  it("renders mock-data marker for the demo schedule line", () => {
+  it("renders schedule copy in product voice, not demo voice", () => {
     render(<AlertBar {...baseProps} />);
-    const marker = screen.getByTestId("alert-bar-mock-schedule");
-    expect(marker).toHaveAttribute("data-mock", "true");
-    expect(marker.textContent).toMatch(/デモ表示/);
+    const section = screen.getAllByRole("button")[0].closest("section");
+    expect(section).not.toBeNull();
+    const text = section!.textContent ?? "";
+    expect(text).not.toMatch(/デモ/);
+    expect(text).not.toMatch(/モック/);
+    expect(text).toMatch(/週次サマリー配信設定/);
   });
 });

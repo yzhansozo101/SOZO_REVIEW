@@ -48,26 +48,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
       >
         <div style={{ fontWeight: "var(--w-semibold)" }}>{title}</div>
         <div className="t-small" style={{ color: "inherit" }}>
-          デモ段階では定時送信なし。週次サマリーは手動テスト送信のみです。
-        </div>
-        <div
-          className="t-small"
-          data-testid="alert-bar-mock-schedule"
-          data-mock="true"
-          style={{
-            color: "inherit",
-            background: "var(--ink-50)",
-            border: "1px dashed var(--ink-200)",
-            borderRadius: "var(--r-sm)",
-            padding: "6px 10px",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "var(--s-2)",
-            fontStyle: "italic",
-          }}
-        >
-          <span aria-hidden="true">ⓘ</span>
-          次回自動送信予定: 来週月曜 09:00(デモ表示)
+          週次サマリー配信設定: 毎週月曜 09:00、登録メール宛に自動送信。
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s-2)", alignItems: "center" }}>
           <button className="alert-bar-button" type="button" style={buttonStyle} onClick={() => setPreview("f1")}>

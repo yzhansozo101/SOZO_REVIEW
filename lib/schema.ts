@@ -7,16 +7,20 @@
  * Design: docs/system-design-geo.md §4.6
  */
 
+import { FAQ_ITEMS } from "@/lib/marketing/faq";
+
 export const SITE_URL = "https://sozonext-review.vercel.app";
 
 const ORG_ID = `${SITE_URL}/#org`;
 const WEBSITE_ID = `${SITE_URL}/#site`;
 const WEBAPP_ID = `${SITE_URL}/#app`;
+const FAQ_ID = `${SITE_URL}/#faq`;
 
 const organization = {
   "@type": "Organization",
   "@id": ORG_ID,
   name: "SOZONEXT",
+  alternateName: ["SOZO NEXT"],
   url: `${SITE_URL}/`,
   description:
     "民泊運営支援を専門とする会社。Airbnb ホスト向けの診断ツール SOZONEXT Review を運営。",
@@ -35,6 +39,13 @@ const webApplication = {
   "@type": "WebApplication",
   "@id": WEBAPP_ID,
   name: "SOZONEXT Review",
+  alternateName: [
+    "SOZO Review",
+    "SOZONEXT Review",
+    "SOZONEXT レビュー",
+    "SOZONEXT Airbnb listing health check",
+    "SOZONEXT Airbnb 房源健康诊断",
+  ],
   url: `${SITE_URL}/`,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
@@ -49,10 +60,23 @@ const webApplication = {
   },
 } as const;
 
+const faqPage = {
+  "@type": "FAQPage",
+  "@id": FAQ_ID,
+  mainEntity: FAQ_ITEMS.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+} as const;
+
 /**
  * Graph for the homepage `/`. Returns the @graph array for
  * @context: https://schema.org wrapping.
  */
 export function homepageGraph(): readonly object[] {
-  return [organization, website, webApplication];
+  return [organization, website, webApplication, faqPage];
 }

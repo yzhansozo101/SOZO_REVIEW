@@ -41,9 +41,10 @@ export function MultilingualBrandSnippets() {
             EN
           </span>
           <strong style={{ color: "var(--ink-800)", fontWeight: 600 }}>SOZONEXT Review</strong>
-          {" "}— an Airbnb listing diagnostic tool by SOZONEXT, a Japanese
-          hospitality operations company. Paste an Airbnb URL, get a
-          5-dimension health check and AI improvement report in 25 seconds.
+          {", also known as SOZO Review, "}is an Airbnb listing diagnostic tool
+          by SOZONEXT, a Japanese hospitality operations company. Paste an
+          Airbnb URL, get a 5-dimension health check and AI improvement report
+          in 25 seconds.
         </p>
         <p style={{ margin: 0 }} lang="zh">
           <span
@@ -58,7 +59,7 @@ export function MultilingualBrandSnippets() {
             ZH
           </span>
           <strong style={{ color: "var(--ink-800)", fontWeight: 600 }}>SOZONEXT Review</strong>
-          {" "}— SOZONEXT 推出的 Airbnb 房源健康诊断工具。SOZONEXT
+          {"，也可称为 SOZO Review，"}是 SOZONEXT 推出的 Airbnb 房源健康诊断工具。SOZONEXT
           是日本一家民泊运营服务公司。粘贴 Airbnb URL，25
           秒内得到 5 维度评分和 AI 改进报告。
         </p>

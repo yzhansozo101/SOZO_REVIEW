@@ -1,5 +1,6 @@
 import { DiagnosticForm } from "@/components/DiagnosticForm";
 import { AboutSozonext } from "@/components/marketing/AboutSozonext";
+import { Faq } from "@/components/marketing/Faq";
 import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { MultilingualBrandSnippets } from "@/components/marketing/MultilingualBrandSnippets";
@@ -26,6 +27,7 @@ export default function Home() {
         </section>
         <HowItWorks />
         <AboutSozonext />
+        <Faq />
         <MultilingualBrandSnippets />
       </main>
     </>

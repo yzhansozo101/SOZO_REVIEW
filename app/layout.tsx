@@ -6,6 +6,11 @@ import { geist, geistMono, newsreader, notoSansJP, notoSerifJP } from "./fonts";
 export const metadata: Metadata = {
   title: ja.app.title,
   description: ja.app.description,
+  verification: {
+    other: {
+      "msvalidate.01": "050C453F1AC4CDC35FDCCF5B2B0063A6",
+    },
+  },
 };
 
 const fontVars = [geist, geistMono, newsreader, notoSansJP, notoSerifJP]

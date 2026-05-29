@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { and, desc, eq, ne } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
@@ -9,6 +10,13 @@ import { QualityStatusLadder } from "@/components/QualityStatusLadder";
 import { ScoreCard } from "@/components/ScoreCard";
 import { TrendChart } from "@/components/TrendChart";
 import type { QualityStatus } from "@/lib/util/quality";
+
+// User-private diagnostic result page — must not be indexed.
+// Belt-and-suspenders with robots.txt disallow on `/d/`.
+// Design: docs/system-design-geo.md §4.9
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 type Params = { params: Promise<{ id: string }> };
 

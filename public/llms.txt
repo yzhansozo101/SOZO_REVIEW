@@ -1,0 +1,34 @@
+# SOZONEXT Review
+
+> Airbnb 物件の健康診断ツール — SOZONEXT が運営。URL を貼るだけで 25 秒で 5 維度評価と AI 改善レポートを生成。スーパーホスト維持や Airbnb 検索順位の改善に。
+
+民泊運営支援を専門とする SOZONEXT が、Airbnb ホストのために開発した内部発の診断ツール。写真・タイトル・紹介文・設備・レビューの 5 維度でスコアリングし、スーパーホスト維持・Airbnb 検索順位改善・ゲスト評価向上に必要な具体的アクションを日本語で提示。OTA リスティング最適化や民泊運営代行を行うチーム、民泊サブリース運営者に最適。
+
+## 特徴
+- Airbnb タイトル 最適化 の自動診断
+- Airbnb 紹介文 添削（描述完整性スコア）
+- Airbnb 写真 改善（カバー写真 + カテゴリ網羅評価）
+- 設備網羅性とレビュー解析（高頻度ネガティブキーワード抽出）
+- Quality Status 参考値（公開情報からの推定）
+
+料金無料、25 秒で結果、PDF ダウンロード可能。
+
+## Primary
+- [Home](https://sozonext-review.vercel.app/): 診断フォーム + プロダクト紹介
+
+## About SOZONEXT
+SOZONEXT は民泊運営支援を専門とする日本の会社。SOZONEXT Review は内部のオペレーション運営から生まれた診断ツール。
+
+---
+
+## English
+
+SOZONEXT Review is an Airbnb listing diagnostic tool by SOZONEXT, a hospitality operations company based in Japan. Paste an Airbnb listing URL and get a 5-dimension health check (photos, title, description, amenities, reviews) plus an AI-generated improvement report in 25 seconds. Designed for hosts aiming to maintain Superhost status, improve Airbnb search ranking, and raise guest review scores. Useful for OTA listing optimization, vacation rental sublease operators, and property management agencies. Free to use. Output is in Japanese.
+
+Keywords: Airbnb diagnostic, listing audit, Airbnb optimization tool, vacation rental analytics, Superhost maintenance, Airbnb search ranking, guest review improvement, 民泊, host tool, OTA optimization.
+
+## 中文
+
+SOZONEXT Review 是 SOZONEXT 推出的 Airbnb 房源健康诊断工具。SOZONEXT 是日本一家民泊运营服务公司。粘贴 Airbnb 房源 URL，25 秒内得到 5 维度健康评分（照片、标题、描述、设施、评论）和 AI 改进报告。面向想维持 Superhost 资格、提升 Airbnb 搜索排名、改善房客评分的房东。也适合 OTA 房源优化、民宿托管、转租运营团队使用。免费使用，报告语言为日语。
+
+关键词：Airbnb 诊断、房源评分、民宿优化工具、Airbnb 工具、民泊运营、Superhost、搜索排名、房客评价。

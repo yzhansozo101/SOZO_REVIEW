@@ -15,28 +15,40 @@ type Props = {
 
 export function DimensionGrid({ dimensions }: Props) {
   return (
-    <div style={{ margin: "var(--s-6) 0 0" }}>
-      <div
+    <section
+      style={{
+        background: "var(--card)",
+        border: "1px solid var(--ink-100)",
+        borderRadius: "var(--r-lg)",
+        padding: "var(--s-5)",
+        display: "grid",
+        gap: "var(--s-4)",
+      }}
+    >
+      <header
         style={{
           display: "flex",
-          alignItems: "baseline",
+          alignItems: "center",
           justifyContent: "space-between",
           gap: "var(--s-3)",
-          marginBottom: "14px",
         }}
       >
-        <h2 className="t-h2" style={{ margin: 0, fontSize: "var(--t-md)" }}>
-          5項目スコア分析
-        </h2>
-        <span className="t-mono" style={{ color: "var(--ink-500)", fontSize: "11px" }}>
-          5次元
+        <span
+          className="t-small"
+          style={{ color: "var(--ink-600)", fontSize: 13 }}
+        >
+          写真・タイトル・説明文・設備・レビューを個別に採点
         </span>
-      </div>
+        <span className="t-mono" style={{ color: "var(--ink-400)", fontSize: 11 }}>
+          5 / 5
+        </span>
+      </header>
+
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "10px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+          gap: "var(--s-3)",
         }}
       >
         <DimensionCard
@@ -75,6 +87,6 @@ export function DimensionGrid({ dimensions }: Props) {
           note={dimensions.reviews.count ? `${dimensions.reviews.count} 件のレビュー` : "レビューなし"}
         />
       </div>
-    </div>
+    </section>
   );
 }

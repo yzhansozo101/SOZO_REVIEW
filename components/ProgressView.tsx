@@ -47,6 +47,7 @@ export function ProgressView() {
         }}
       >
         <span
+          className="progress-spin"
           aria-hidden="true"
           style={{
             width: 16,
@@ -68,6 +69,7 @@ export function ProgressView() {
 
       <div aria-hidden="true" style={{ display: "grid", gap: "var(--s-4)" }}>
         <div
+          className="progress-shimmer"
           style={{
             ...skeletonBar,
             height: 160,
@@ -84,6 +86,7 @@ export function ProgressView() {
           {[0, 1, 2, 3, 4].map((i) => (
             <div
               key={i}
+              className="progress-shimmer"
               style={{
                 ...skeletonBar,
                 height: 100,
@@ -93,6 +96,7 @@ export function ProgressView() {
           ))}
         </div>
         <div
+          className="progress-shimmer"
           style={{
             ...skeletonBar,
             height: 220,
@@ -115,6 +119,11 @@ export function ProgressView() {
           .progress-status {
             align-items: flex-start;
           }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .progress-spin { animation: none !important; }
+          .progress-shimmer { animation: none !important; }
         }
       `}</style>
     </div>

@@ -12,12 +12,15 @@ export const metadata: Metadata = {
     template: "%s | SOZONEXT Review",
   },
   description:
-    "Airbnb 物件の URL から 25 秒で 5 維度評価と AI 改善レポート。スーパーホスト維持や Airbnb 検索順位向上を目指す民泊運営者向けの診断ツール。SOZONEXT が運営。",
+    "Airbnb リスティングの URL から 25 秒で 5 維度評価と AI 改善レポート。スーパーホスト維持や Airbnb 検索順位向上を目指す民泊運営者向けの診断ツール。SOZONEXT が運営。",
   keywords: [
     // brand
     "SOZONEXT",
     "SOZO Review",
     "SOZONEXT Review",
+    // canonical product name (this PR's brand alignment)
+    "Airbnb リスティング診断",
+    "リスティング診断",
     // unique product feature names (extremely low competition)
     "5維度評価",
     "5維度スコアリング",
@@ -34,7 +37,7 @@ export const metadata: Metadata = {
     "民泊サブリース",
     "民泊 運営代行",
     "OTA リスティング最適化",
-    // baseline
+    // baseline + legacy aliases (people may still search older terms)
     "Airbnb",
     "民泊",
     "ヘルスチェック",
@@ -49,16 +52,16 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     alternateLocale: ["en_US", "zh_CN"],
     siteName: "SOZONEXT Review",
-    title: "SOZONEXT Review · Airbnb 物件 ヘルスチェック",
+    title: "SOZONEXT Review · Airbnb リスティング診断",
     description:
-      "Airbnb 物件の URL から 25 秒で 5 維度評価 + AI 改善レポート。スーパーホスト維持・検索順位向上に。",
+      "Airbnb リスティングの URL から 25 秒で 5 維度評価 + AI 改善レポート。スーパーホスト維持・検索順位向上に。",
     url: `${SITE_URL}/`,
   },
   twitter: {
     card: "summary_large_image",
-    title: "SOZONEXT Review · Airbnb 物件 ヘルスチェック",
+    title: "SOZONEXT Review · Airbnb リスティング診断",
     description:
-      "Airbnb 物件の URL から 25 秒で 5 維度評価 + AI 改善レポート。スーパーホスト維持・検索順位向上に。",
+      "Airbnb リスティングの URL から 25 秒で 5 維度評価 + AI 改善レポート。スーパーホスト維持・検索順位向上に。",
   },
   alternates: { canonical: `${SITE_URL}/` },
   robots: {

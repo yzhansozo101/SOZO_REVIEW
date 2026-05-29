@@ -10,35 +10,46 @@ export function Hero() {
   return (
     <section
       style={{
-        width: "min(760px, calc(100vw - 32px))",
+        width: "min(880px, calc(100vw - 32px))",
         margin: "0 auto",
-        padding: "var(--s-7) 0 var(--s-5)",
+        padding: "var(--s-8) 0 var(--s-5)",
+        textAlign: "center",
       }}
     >
-      <p
-        className="t-eyebrow"
-        style={{ margin: "0 0 18px", letterSpacing: "0.08em" }}
-      >
+      <span className="eyebrow-chip" style={{ marginBottom: "var(--s-4)" }}>
         SOZONEXT REVIEW
-      </p>
+      </span>
       <h1
         className="t-h1"
         style={{
-          maxWidth: 680,
-          margin: "0 0 var(--s-4)",
-          fontSize: "clamp(32px, 6vw, 48px)",
-          lineHeight: 1.1,
+          margin: "var(--s-4) auto var(--s-4)",
+          maxWidth: 820,
+          fontSize: "clamp(40px, 7vw, 76px)",
+          lineHeight: 1.05,
+          letterSpacing: "-0.025em",
+          fontWeight: 600,
         }}
       >
-        Airbnb 物件の 健康診断を 25 秒で。
+        <span style={{ display: "block" }}>Airbnb リスティングを</span>
+        <span
+          style={{
+            display: "block",
+            background: "linear-gradient(120deg, var(--sozonext-navy) 0%, var(--sozonext-sky) 90%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          25 秒で健康診断。
+        </span>
       </h1>
       <p
         style={{
-          maxWidth: 680,
-          margin: 0,
+          maxWidth: 620,
+          margin: "0 auto",
           fontSize: 18,
-          lineHeight: 1.5,
-          color: "var(--ink-700)",
+          lineHeight: 1.6,
+          color: "var(--ink-600)",
         }}
       >
         URL を貼るだけで、写真・タイトル・紹介文・設備・レビューの 5

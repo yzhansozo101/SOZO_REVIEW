@@ -28,65 +28,67 @@ export function HowItWorks() {
   return (
     <section
       style={{
-        width: "min(760px, calc(100vw - 32px))",
+        width: "min(1100px, calc(100vw - 32px))",
         margin: "0 auto",
-        padding: "var(--s-7) 0 var(--s-5)",
+        padding: "var(--s-8) 0 var(--s-6)",
       }}
     >
-      <h2
-        className="t-h2"
+      <header
         style={{
-          margin: "0 0 var(--s-4)",
-          fontSize: 24,
-          letterSpacing: "0.02em",
+          textAlign: "center",
+          marginBottom: "var(--s-6)",
+          display: "grid",
+          justifyItems: "center",
+          gap: "var(--s-3)",
         }}
       >
-        使い方
-      </h2>
+        <span className="eyebrow-chip">使い方</span>
+        <h2
+          className="t-h2"
+          style={{
+            margin: 0,
+            fontSize: "clamp(28px, 3.4vw, 40px)",
+            letterSpacing: "-0.015em",
+            lineHeight: 1.15,
+          }}
+        >
+          3 ステップで、運営判断に必要な答えが揃う
+        </h2>
+      </header>
+
       <ol
         style={{
           listStyle: "none",
           padding: 0,
           margin: 0,
           display: "grid",
-          gap: "var(--s-3)",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "var(--s-4)",
         }}
       >
         {STEPS.map((s) => (
-          <li
-            key={s.n}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto 1fr",
-              gap: "var(--s-3)",
-              padding: "var(--s-3) 0",
-              borderTop: "1px solid var(--ink-200)",
-            }}
-          >
-            <span
-              className="t-mono"
+          <li key={s.n} className="step-card">
+            <div className="step-num">{s.n}</div>
+            <div className="step-rule" />
+            <div
               style={{
-                color: "var(--ink-400)",
-                fontSize: 14,
-                paddingTop: 2,
+                fontSize: 18,
+                fontWeight: 600,
+                marginBottom: "var(--s-2)",
+                color: "var(--ink-900)",
+                letterSpacing: "-0.005em",
               }}
             >
-              {s.n}
-            </span>
-            <div>
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  marginBottom: 4,
-                  color: "var(--ink-900)",
-                }}
-              >
-                {s.title}
-              </div>
-              <div style={{ fontSize: 15, color: "var(--ink-700)", lineHeight: 1.5 }}>
-                {s.body}
-              </div>
+              {s.title}
+            </div>
+            <div
+              style={{
+                fontSize: 14.5,
+                color: "var(--ink-600)",
+                lineHeight: 1.65,
+              }}
+            >
+              {s.body}
             </div>
           </li>
         ))}

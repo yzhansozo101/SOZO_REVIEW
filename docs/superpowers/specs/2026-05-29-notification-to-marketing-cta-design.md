@@ -253,9 +253,8 @@ tests/email-weekly.test.ts
 
 ## 执行方式
 
-- **本 spec 的实施由 Codex 执行**（superpowers 流程）：写一份 implementation plan 后切到 Codex，由它按 plan 落代码、跑测试、出 PR
-- Claude 这边只负责：本 spec + 接下来的 implementation plan + 必要时 review Codex 的 PR
-- 关键约束（per `.claude/rules/never-inline-secrets.md`）：plan / 代码 / commit 文案里**绝对不能出现真实 secret 值**。`RESEND_API_KEY` 等 placeholder 只能用 `<placeholder>` 形式
+- **本 spec 的实施由 Claude 执行**（走 superpowers 流程）：先生成 implementation plan，然后 task-by-task 落代码、跑测试、出 PR
+- 关键约束（per `.claude/rules/never-inline-secrets.md`）：plan / 代码 / commit 文案里**绝对不能出现真实 secret 值**。本次涉及到的 `RESEND_API_KEY`、`ALERT_EMAIL_TO` 都是被删除的，应该不会出现 placeholder 需求
 
 ---
 

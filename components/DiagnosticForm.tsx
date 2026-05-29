@@ -94,7 +94,7 @@ export function DiagnosticForm() {
           style={{
             ...fieldBase,
             border: `1px solid ${error ? "var(--grade-d)" : "var(--ink-200)"}`,
-            boxShadow: error ? "0 0 0 3px rgba(199, 56, 43, 0.14)" : undefined,
+            boxShadow: error ? "var(--shadow-focus-error)" : undefined,
           }}
         >
           <span aria-hidden="true" style={{ color: "var(--ink-400)", display: "inline-flex" }}>

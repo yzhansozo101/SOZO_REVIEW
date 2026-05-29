@@ -131,6 +131,7 @@ export function EmailPreview({ kind, score, alertEmailTo, diagnosisId, onClose }
           font-family: var(--font-sans);
           font-size: 12px;
           line-height: 1;
+          min-height: 44px;
           padding: 12px 18px;
         }
 

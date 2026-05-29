@@ -28,5 +28,6 @@ describe("EmailPreview", () => {
       .map((s) => s.textContent ?? "")
       .join("\n");
     expect(css).toMatch(/\.email-preview-close[^{]*\{[^}]*padding:\s*12px 18px/);
+    expect(css).toMatch(/\.email-preview-close[^{]*\{[^}]*min-height:\s*44px/);
   });
 });

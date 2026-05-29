@@ -22,7 +22,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
     : `評価健全(${score} 点 >= 60)、アラートはトリガーされていません`;
 
   const buttonStyle = {
-    padding: "6px 12px",
+    padding: "10px 16px",
     background: "var(--card)",
     border: "1px solid var(--ink-200)",
     borderRadius: "var(--r-md)",
@@ -30,6 +30,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
     fontSize: "var(--t-sm)",
     color: "var(--ink-800)",
     fontFamily: "var(--font-sans)",
+    transition: "background var(--t-fast) var(--ease-out)",
   } as const;
 
   return (
@@ -47,21 +48,18 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
       >
         <div style={{ fontWeight: "var(--w-semibold)" }}>{title}</div>
         <div className="t-small" style={{ color: "inherit" }}>
-          デモ段階では定時送信なし。週次サマリーは手動テスト送信のみです。
-        </div>
-        <div className="t-small" style={{ color: "inherit" }}>
-          次回自動送信予定: 来週月曜 09:00(デモ表示)
+          週次サマリー配信設定: 毎週月曜 09:00、登録メール宛に自動送信。
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--s-2)", alignItems: "center" }}>
-          <button type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
+          <button className="alert-bar-button" type="button" style={buttonStyle} onClick={() => setPreview("f1")}>
             アラートメール プレビュー
           </button>
-          <button type="button" style={buttonStyle} onClick={() => setPreview("f7")}>
+          <button className="alert-bar-button" type="button" style={buttonStyle} onClick={() => setPreview("f7")}>
             週次サマリー プレビュー
           </button>
           <form action="/api/weekly/test" method="POST">
             <input type="hidden" name="diagnosisId" value={diagnosisId} />
-            <button type="submit" style={buttonStyle}>
+            <button className="alert-bar-button" type="submit" style={buttonStyle}>
               🧪 週次サマリーを今すぐテスト送信
             </button>
           </form>
@@ -77,6 +75,16 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
           onClose={() => setPreview(null)}
         />
       )}
+      <style jsx>{`
+        .alert-bar-button:hover {
+          background: var(--ink-50) !important;
+        }
+
+        .alert-bar-button:focus-visible {
+          outline: none;
+          box-shadow: var(--shadow-focus);
+        }
+      `}</style>
     </>
   );
 }

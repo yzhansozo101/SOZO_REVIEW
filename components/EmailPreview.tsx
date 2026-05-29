@@ -77,7 +77,7 @@ export function EmailPreview({ kind, score, alertEmailTo, diagnosisId, onClose }
           align-items: center;
           justify-content: center;
           padding: 28px;
-          background: rgba(14, 17, 22, 0.42);
+          background: var(--overlay-bg);
           backdrop-filter: blur(3px);
         }
 
@@ -131,7 +131,8 @@ export function EmailPreview({ kind, score, alertEmailTo, diagnosisId, onClose }
           font-family: var(--font-sans);
           font-size: 12px;
           line-height: 1;
-          padding: 7px 12px;
+          min-height: 44px;
+          padding: 12px 18px;
         }
 
         .email-preview-close:hover {

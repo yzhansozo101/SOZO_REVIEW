@@ -22,7 +22,6 @@ export function DimensionCard({ label, score, primaryStat, note, placeholder }: 
         display: "grid",
         gap: "var(--s-2)",
         minWidth: 0,
-        boxShadow: "0 1px 2px rgba(14, 17, 22, 0.03)",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "var(--s-2)" }}>

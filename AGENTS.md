@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-このファイルは Claude Code が本リポジトリで作業する際のガイドです。
+このファイルは Codex が本リポジトリで作業する際のガイドです。
 
 ---
 
@@ -26,7 +26,7 @@
 |---|---|
 | [docs/prd.md](docs/prd.md) | PRD:機能・受け入れ条件・エッジケース |
 | [docs/system-design.md](docs/system-design.md) | アーキテクチャ・モジュール構成・DB スキーマ・API 契約 |
-| [docs/adr/](docs/adr/) | 5 つのアーキテクチャ決定(Vercel+Mac / fetch / Claude SDK / 同期 / 単一 tool_use) |
+| [docs/adr/](docs/adr/) | 5 つのアーキテクチャ決定(Vercel+Mac / fetch / Codex SDK / 同期 / 単一 tool_use) |
 | [docs/user-flow.md](docs/user-flow.md) | ユーザーフロー図(Mermaid 埋め込み) |
 | [design_handoff_review_app/README.md](design_handoff_review_app/README.md) | Spec → コンポーネントマップ・実装チェックリスト |
 | [design_handoff_review_app/prototype/](design_handoff_review_app/prototype/) | **ビジュアル参照のみ**(React-via-Babel、出荷しない) |
@@ -44,14 +44,14 @@
 | フロント + 短任務 API | **Next.js 15 (App Router) + TypeScript**、**Vercel Hobby ($0)** にデプロイ |
 | スクレイピング + AI(重活) | **Mac 常駐 Node サービス**、Cloudflare Tunnel で固定 HTTPS 公開 |
 | ブラウザ自動化 | **使わない**(Playwright 不要 → ADR-002)。`fetch` + `data-deferred-state-0` JSON 解析 |
-| AI | **@anthropic-ai/claude-agent-sdk**(Mac の Claude Code Enterprise OAuth、$0)→ ADR-003 |
+| AI | **@anthropic-ai/Codex-agent-sdk**(Mac の Codex Enterprise OAuth、$0)→ ADR-003 |
 | DB | **Neon Postgres** + **Drizzle ORM** + `@neondatabase/serverless` |
 | メール | **Resend**(無料 3000/月) |
 | PDF | **@react-pdf/renderer** + **NotoSansJP** 埋め込み |
 | 図表 | **Recharts** |
 | 多言語 | **next-intl**(`ja` 単一ロケール) |
 
-**月コスト合計 $0**:Vercel Hobby + Neon 無料 + Resend 無料 + Claude Code サブスクリプション。
+**月コスト合計 $0**:Vercel Hobby + Neon 無料 + Resend 無料 + Codex サブスクリプション。
 
 ---
 
@@ -73,7 +73,7 @@ repo/
 ├── components/              # ScoreCard / QualityStatusLadder / DimensionCard / ...
 ├── lib/                     # db / scraper(client) / email / pdf / i18n / util
 ├── public/fonts/NotoSansJP-Regular.ttf
-└── mac-scraper/             # 独立 Node プロジェクト(Express + Claude Agent SDK)
+└── mac-scraper/             # 独立 Node プロジェクト(Express + Codex Agent SDK)
     └── src/{server,airbnb,score,ai,log}.ts
 ```
 
@@ -119,7 +119,7 @@ POST /api/diagnose { url }       ← Vercel 60s 予算
   → 3. 1 時間以内のキャッシュ命中 → 旧結果へ 302
   → 4. POST Mac /diagnose(45s timeout)
         Mac: fetch PDP → 解析 deferred-state → reviews GraphQL
-             → 5 維度評分 → Claude Agent SDK 1 回 tool_use → 完成 JSON
+             → 5 維度評分 → Codex Agent SDK 1 回 tool_use → 完成 JSON
   → 5. INSERT diagnoses(snapshot + AI 全部入り)
   → 6. score < 60 かつ未送信 → Resend F1 メール送信
   → 7. { diagnosis_id, redirect } を返す
@@ -131,7 +131,7 @@ POST /api/diagnose { url }       ← Vercel 60s 予算
 
 ## 9. AI 統合の固定方針(ADR-005)
 
-**1 回の Claude 呼び出しで tool_use により 3 種類の成果物を同時に返す**:
+**1 回の Codex 呼び出しで tool_use により 3 種類の成果物を同時に返す**:
 1. 日本語 markdown レポート(`report_md`)
 2. B12 高頻度ネガティブキーワード配列(`negative_keywords`)
 3. F1 メールで使う Top 3 改善案(`top3`)
@@ -156,8 +156,8 @@ POST /api/diagnose { url }       ← Vercel 60s 予算
 
 ## 11. 必ず守る / やってはいけないこと
 
-**プロジェクトルール(`.claude/rules/` 配下、すべて必読・必遵守):**
-- [`.claude/rules/never-inline-secrets.md`](.claude/rules/never-inline-secrets.md) — plan/コード/コミット文に **本物の token / password / API key を絶対書かない**。`<placeholder>` を使い、実値は `.env.local`(gitignore)か Vercel 環境変数のみ
+**プロジェクトルール(`.Codex/rules/` 配下、すべて必読・必遵守):**
+- [`.Codex/rules/never-inline-secrets.md`](.Codex/rules/never-inline-secrets.md) — plan/コード/コミット文に **本物の token / password / API key を絶対書かない**。`<placeholder>` を使い、実値は `.env.local`(gitignore)か Vercel 環境変数のみ
 
 **守る**:
 - 仕様変更は必ずユーザー確認。SPEC/SYSTEM_DESIGN/ADR は許可無く編集しない
@@ -183,7 +183,7 @@ POST /api/diagnose { url }       ← Vercel 60s 予算
 - [ ] Mac がスリープしない(`caffeinate -d` or 電源設定)
 - [ ] Cloudflare Tunnel プロセス稼働中(`pm2 status`)
 - [ ] Vercel 環境変数 (`DATABASE_URL` / `RESEND_API_KEY` / `ALERT_EMAIL_TO` / `SCRAPER_URL` / `SCRAPER_SECRET`) 設定済み
-- [ ] Mac の Claude Code がログイン済み、サブスクリプション有効
+- [ ] Mac の Codex がログイン済み、サブスクリプション有効
 
 ---
 

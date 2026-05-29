@@ -1,61 +1,61 @@
-# Replace F1/F7 notification UI with SOZONEXT marketing CTA
+# 把 F1/F7 通知 UI 换成 SOZONEXT 营销 CTA
 
-**Date**: 2026-05-29
-**Status**: Approved (pending implementation plan)
-**Branch**: `feature/notification`
-**Author**: Brainstorming session with Claude
-
----
-
-## Problem
-
-The result page section "05 通知" currently displays the F1 alert email status and provides three buttons (alert preview, weekly summary preview, weekly test send). For the demo audience (boss + internal users) this UI is low-value: it neither helps the user understand their listing nor drives any business outcome.
-
-Meanwhile the demo target audience (民泊 hosts who get a low score) is the exact ideal customer profile for SOZONEXT's existing 宿泊施設運営・集客支援 service line. The diagnostic result page is the highest-intent surface in the product (the user has just been told their listing is in trouble) and currently has no path to monetisation.
-
-## Goal
-
-Replace the "05 通知" section with a marketing CTA card that drives leads to SOZONEXT's minpaku operations service. Delete the now-unused F1/F7 email backend and supporting code.
-
-## Non-goals
-
-- No A/B testing infrastructure for CTA copy
-- No analytics/conversion tracking (instrumented in a later PR if desired)
-- No multi-language CTA copy (JA only — matches the rest of the product surface)
-- No CTA on homepage / other pages (limited to result page bottom)
-- No migration to drop the `alerts_sent` Postgres table (kept as dead schema; revisit later)
+**日期**：2026-05-29
+**状态**：已批准（待写实施计划）
+**分支**：`feature/notification`
+**作者**：Brainstorming 会话（Claude 主持）
 
 ---
 
-## Decisions
+## 问题
 
-| Question | Decision |
+结果页"05 通知"区域当前展示 F1 アラートメール发送状态 + 3 个按钮（アラート预览 / 週次サマリー预览 / 週次サマリー手动测试发送）。对 demo 受众（老板 + 内部用户）来说，这块 UI 价值不高：既没帮用户理解他们的 listing，也没驱动任何商业结果。
+
+而 demo 的目标受众（拿到低分的民泊 host）正是 SOZONEXT 现有"宿泊施設運営・集客支援"业务线的理想客户画像（ICP）。诊断结果页是整个产品里**用户意图最高**的页面（用户刚被告知自己的 listing 有问题），但目前没有任何转化路径。
+
+## 目标
+
+把"05 通知"区域换成一个营销 CTA 卡片，把流量引到 SOZONEXT 的民泊代运营业务。同时彻底删除现在没人用的 F1/F7 邮件后端和配套代码。
+
+## 不做（Non-goals）
+
+- 不做 CTA 文案的 A/B 测试基础设施
+- 不做点击/转化埋点（如有需要后续 PR 单独做）
+- 不做多语言 CTA（仅日文 —— 与产品其他界面一致）
+- 不在首页 / 其他页面放 CTA（限于结果页底部）
+- 不做 drop `alerts_sent` Postgres 表的 migration（保留为 dead schema，以后再说）
+
+---
+
+## 已决定的事项
+
+| 问题 | 决定 |
 |---|---|
-| What does the CTA show? | Always, regardless of overall score |
-| Conditional copy by grade? | No — single copy variant |
-| Contact channels | Email + phone + website |
-| Visual style | "A. white card with navy accents" — matches existing report card pattern |
-| Section label | `05 サポート` (replaces `05 通知`) |
-| Backend F1/F7 fate | Delete entirely (templates, send code, test endpoint, EmailPreview, tests) |
-| `alerts_sent` table | Keep in DB; remove from `lib/db/schema.ts` exports |
-| Resend dependency | Remove; package + env vars deleted |
+| CTA 什么时候显示？ | 总是显示，不看 score |
+| 文案是否随 grade 变化？ | 否 —— 单一文案 |
+| 联系渠道 | 邮件 + 电话 + 官网 |
+| 视觉风格 | 「A. 白卡 + Navy 重点」——与现有 report card 同语言 |
+| Section 标签 | `05 サポート`（替换原 `05 通知`）|
+| 后端 F1/F7 归宿 | 全删（模板、发送代码、测试 endpoint、EmailPreview、相关测试）|
+| `alerts_sent` 表 | DB 表保留；从 `lib/db/schema.ts` export 中移除 |
+| Resend 依赖 | 移除；package + env vars 一并删 |
 
 ---
 
-## New component: `components/SupportCta.tsx`
+## 新组件：`components/SupportCta.tsx`
 
-Pure server component, no props, no client interactivity. All copy hardcoded.
+纯 server component，无 props，无客户端交互。文案全部硬编码。
 
-### Visual structure
+### 视觉结构
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  ⬤ (navy circle icon)   もっと結果を出しませんか？      │
-│                          ──────                          │
-│                          SOZONEXT は民泊運営代行の      │
-│                          専門会社。リスティング改善から  │
-│                          運営代行・収益コンサルまで     │
-│                          一括サポートします。           │
+│  ⬤ (navy 圆形 icon)   もっと結果を出しませんか？        │
+│                        ──────                            │
+│                        SOZONEXT は民泊運営代行の        │
+│                        専門会社。リスティング改善から    │
+│                        運営代行・収益コンサルまで        │
+│                        一括サポートします。              │
 │                                                          │
 │  ──────────────────────────────                         │
 │                                                          │
@@ -75,95 +75,95 @@ Pure server component, no props, no client interactivity. All copy hardcoded.
 └─────────────────────────────────────────────────────────┘
 ```
 
-### Layout
+### 布局
 
 ```
-.support-cta (white card, shadow, var(--r-lg))
-├── header (flex row)
-│   ├── navy 28×28 icon circle (home SVG)
-│   └── headline + description (h3 + p)
+.support-cta（白卡 + shadow + var(--r-lg)）
+├── header（flex row）
+│   ├── 28×28 navy icon 圆（home SVG）
+│   └── 标题 + 描述（h3 + p）
 ├── divider
-├── bullets grid (3 rows × {checkmark, title, caption})
+├── bullets 网格（3 行 × {checkmark, title, caption}）
 ├── divider
-└── contact row (flex)
-    ├── email button (primary navy CTA)
-    └── secondary contact (phone + website, stacked)
+└── 联系信息行（flex）
+    ├── 邮件按钮（navy primary CTA）
+    └── 次要联系（电话 + 官网，竖排）
 ```
 
-### Copy (JA, frozen)
+### 文案（日文，冻结）
 
-**Headline**: `もっと結果を出しませんか？`
+**标题**：`もっと結果を出しませんか？`
 
-**Description**:
+**描述**：
 > SOZONEXT は民泊運営代行の専門会社。リスティング改善から運営代行・収益コンサルまで一括サポートします。
 
-**Bullets**:
+**Bullets**：
 1. `リスティング最適化代行` — `写真・タイトル・紹介文を SOZONEXT が制作`
 2. `24h 運営代行` — `ゲスト対応・清掃・チェックイン代行`
 3. `収益改善コンサル` — `価格戦略・RevPAR 改善・複数物件運用`
 
-**Email button label**: `minpaku_info@sozonext.com にメール相談する →`
+**邮件按钮文案**：`minpaku_info@sozonext.com にメール相談する →`
 
-**Phone label**: `📞 03-3842-1552`（icon is SVG, not emoji)
+**电话标签**：`📞 03-3842-1552`（图标用 SVG，不要 emoji）
 
-**Website label**: `🌐 sozonext.com →`（icon is SVG)
+**官网标签**：`🌐 sozonext.com →`（图标用 SVG）
 
-### Contact details
+### 联系信息
 
-| Channel | Value | Link |
+| 渠道 | 值 | Link |
 |---|---|---|
-| Email | `minpaku_info@sozonext.com` | `mailto:minpaku_info@sozonext.com?subject=リスティング改善のご相談&body=SOZONEXT Review で診断後、より良い結果のためご相談したく連絡いたしました。%0A%0A物件 URL:%0A%0Aご質問・ご要望:%0A` |
-| Phone | `03-3842-1552` | `tel:+81338421552` (international format — most portable for mobile dialers) |
-| Website | `https://sozonext.com` | `https://sozonext.com` (target=`_blank`, rel=`noopener noreferrer`) |
+| 邮件 | `minpaku_info@sozonext.com` | `mailto:minpaku_info@sozonext.com?subject=リスティング改善のご相談&body=SOZONEXT Review で診断後、より良い結果のためご相談したく連絡いたしました。%0A%0A物件 URL:%0A%0Aご質問・ご要望:%0A` |
+| 电话 | `03-3842-1552` | `tel:+81338421552`（国际格式 —— 对各手机拨号器最兼容）|
+| 官网 | `https://sozonext.com` | `https://sozonext.com`（`target="_blank"`、`rel="noopener noreferrer"`）|
 
-### Design tokens
+### 设计 tokens
 
-- Card: `background: var(--card)`, `border: 1px solid var(--ink-100)`, `borderRadius: var(--r-lg)`, `padding: var(--s-6)`, `boxShadow: var(--shadow-card)`
-- Icon circle: 28×28, `background: var(--sozonext-navy)`, white SVG inside
-- Headline (h3): `fontSize: 20px`, `fontWeight: 600`, `color: var(--ink-900)`
-- Description (p): `fontSize: 14.5px`, `color: var(--ink-600)`, `lineHeight: 1.6`
-- Bullet checkmark: 22×22 circle, `background: var(--grade-a)`, white SVG checkmark
-- Bullet title: `fontSize: 14.5px`, `fontWeight: 600`, `color: var(--ink-800)`
-- Bullet caption: `fontSize: 13px`, `color: var(--ink-500)`
-- Email button: navy primary CTA (reuses `.btn-primary` class, hover → `var(--sozonext-navy-700)`)
-- Secondary contacts: `fontSize: 13.5px`, `color: var(--ink-700)`, icon `var(--sozonext-navy)`
-- Dividers: `borderTop: 1px solid var(--ink-100)`
-- Responsive: contact row stacks vertically below 640px
+- 卡片：`background: var(--card)`、`border: 1px solid var(--ink-100)`、`borderRadius: var(--r-lg)`、`padding: var(--s-6)`、`boxShadow: var(--shadow-card)`
+- Icon 圆：28×28、`background: var(--sozonext-navy)`、内含白色 SVG
+- 标题（h3）：`fontSize: 20px`、`fontWeight: 600`、`color: var(--ink-900)`
+- 描述（p）：`fontSize: 14.5px`、`color: var(--ink-600)`、`lineHeight: 1.6`
+- Bullet checkmark：22×22 圆、`background: var(--grade-a)`、内含白色 SVG checkmark
+- Bullet 标题：`fontSize: 14.5px`、`fontWeight: 600`、`color: var(--ink-800)`
+- Bullet caption：`fontSize: 13px`、`color: var(--ink-500)`
+- 邮件按钮：navy primary CTA（复用 `.btn-primary` class，hover → `var(--sozonext-navy-700)`）
+- 次要联系：`fontSize: 13.5px`、`color: var(--ink-700)`、icon 用 `var(--sozonext-navy)`
+- Dividers：`borderTop: 1px solid var(--ink-100)`
+- 响应式：联系信息行在 640px 以下竖排
 
-### Accessibility
+### A11y
 
-- All icon SVGs have `aria-hidden="true"`
-- Email button is a `<a>` not `<button>` (semantic — it's a link)
-- Phone link uses `tel:` URI for mobile click-to-call
-- Website link has `rel="noopener noreferrer"` and `target="_blank"`
-- Tab order: email button → phone → website (left-to-right, top-to-bottom)
-- Color contrast: all foreground/background pairs verified 4.5:1+
-
----
-
-## Result page integration
-
-`app/d/[id]/page.tsx`:
-
-- Replace `<AlertBar>` import + render with `<SupportCta />`
-- Remove `alerts_sent` query (DB call, lines ~108–114)
-- Remove `alert` variable and `alertEmailTo` derivation
-- Section wrapper unchanged: `<section style={{ display: "grid", gap: "var(--s-3)" }}>` + `<SectionLabel n="05" title="サポート" />` + `<SupportCta />`
+- 所有 icon SVG 都加 `aria-hidden="true"`
+- 邮件按钮是 `<a>` 不是 `<button>`（语义正确 —— 它是个链接）
+- 电话链接用 `tel:` URI，移动端可一键拨号
+- 官网链接加 `rel="noopener noreferrer"` 和 `target="_blank"`
+- Tab 顺序：邮件按钮 → 电话 → 官网（自左到右、自上到下）
+- 颜色对比：所有前景/背景对都验证过 ≥ 4.5:1
 
 ---
 
-## Backend deletion
+## 结果页接入
 
-### Files deleted
+`app/d/[id]/page.tsx`：
+
+- 把 `<AlertBar>` 的 import + 渲染换成 `<SupportCta />`
+- 移除 `alerts_sent` 查询（DB 调用，约 108–114 行）
+- 移除 `alert` 变量 和 `alertEmailTo` 派生
+- Section 外壳不动：`<section style={{ display: "grid", gap: "var(--s-3)" }}>` + `<SectionLabel n="05" title="サポート" />` + `<SupportCta />`
+
+---
+
+## 后端删除
+
+### 删除的文件
 
 ```
-app/api/diagnose/route.ts          # F1 send block (~lines 64–98) removed; otherwise unchanged
-app/api/weekly/test/route.ts       # entire file deleted
-app/api/weekly/                    # parent dir deleted (empty)
-lib/email/alert.tsx                # F1AlertEmail template
-lib/email/weekly.tsx                # F7WeeklyEmail template
-lib/email/resend.ts                 # Resend client wrapper (no longer used)
-lib/email/                         # parent dir deleted (empty)
+app/api/diagnose/route.ts          # F1 发送块（约 64–98 行）移除；其余不动
+app/api/weekly/test/route.ts       # 整个文件删
+app/api/weekly/                    # 父目录删（已空）
+lib/email/alert.tsx                # F1AlertEmail 模板
+lib/email/weekly.tsx                # F7WeeklyEmail 模板
+lib/email/resend.ts                 # Resend client wrapper（不再用）
+lib/email/                         # 父目录删（已空）
 components/AlertBar.tsx
 components/EmailPreview.tsx
 tests/AlertBar.test.tsx
@@ -172,96 +172,104 @@ tests/email-alert.test.ts
 tests/email-weekly.test.ts
 ```
 
-### Files modified
+### 修改的文件
 
-- `app/api/diagnose/route.ts` — remove F1 send branch (the `if (score < 60 && !alertSentRows.length)` block) and its surrounding imports (`F1AlertEmail`, `alertsSent`)
-- `app/d/[id]/page.tsx` — see above
-- `tests/api-diagnose.test.ts` — remove any assertions related to F1 send behavior; keep other diagnose-path assertions
-- `lib/db/schema.ts` — remove `alertsSent` export (table itself stays in Neon)
+- `app/api/diagnose/route.ts` — 删除 F1 发送分支（`if (score < 60 && !alertSentRows.length)` 那一块）和相关 import（`F1AlertEmail`、`alertsSent`）
+- `app/d/[id]/page.tsx` — 见上
+- `tests/api-diagnose.test.ts` — 删除 F1 发送相关的断言；其余诊断路径断言保留
+- `lib/db/schema.ts` — 移除 `alertsSent` export（表本身留在 Neon）
 
 ### Schema migration
 
-**No migration committed.** The `alerts_sent` table is left in Neon as inert. Add a one-line code comment in `lib/db/schema.ts` where the export was removed: `// alertsSent table dropped from schema export 2026-05-29 (notification system removed). Table still exists in DB.`
+**不提交 migration**。`alerts_sent` 表保留在 Neon 里成为 dead schema。在 `lib/db/schema.ts` 原 export 位置加一行代码注释：`// alertsSent table dropped from schema export 2026-05-29 (notification system removed). Table still exists in DB.`
 
-### Package + env cleanup
+### Package + env 清理
 
-- `package.json` — remove `"resend": "^6.12.4"` from dependencies. Remove `"@react-email/components": "^1.0.12"` if it's only used by F1/F7 templates (verify before deletion; if any other code uses it, keep).
-- `.env.example` — remove `RESEND_API_KEY` and `ALERT_EMAIL_TO` lines.
-- Vercel env vars: noted in changelog for ops to remove manually post-merge.
+- `package.json` — 删除 `"resend": "^6.12.4"`。如果 `"@react-email/components": "^1.0.12"` 只被 F1/F7 模板用到，也删（删之前要 grep 确认没其他用户）。
+- `.env.example` — 删除 `RESEND_API_KEY` 和 `ALERT_EMAIL_TO` 两行。
+- Vercel 环境变量：在 PR 描述里告知 ops 人工删除。
 
 ---
 
-## Tests
+## 测试
 
-### Deleted
+### 删除
 
 - `tests/AlertBar.test.tsx`
 - `tests/EmailPreview.test.tsx`
 - `tests/email-alert.test.ts`
 - `tests/email-weekly.test.ts`
-- F1-related assertions inside `tests/api-diagnose.test.ts`
+- `tests/api-diagnose.test.ts` 里的 F1 相关断言
 
-### Added
+### 新增
 
-`tests/SupportCta.test.tsx`:
+`tests/SupportCta.test.tsx`：
 
-1. Renders all 3 service bullets (text content match)
-2. Email button has `href` starting with `mailto:minpaku_info@sozonext.com` and containing `subject=`
-3. Phone link has `href="tel:+81338421552"`
-4. Website link has `href="https://sozonext.com"`, `target="_blank"`, `rel="noopener noreferrer"`
-5. All icon SVGs have `aria-hidden="true"`
-6. Email button has `class` or inline style matching the navy primary CTA pattern (reuses test pattern from PdfDownloadButton test if applicable)
+1. 渲染包含全部 3 条 service bullets（文本匹配）
+2. 邮件按钮 `href` 以 `mailto:minpaku_info@sozonext.com` 开头且包含 `subject=`
+3. 电话链接 `href="tel:+81338421552"`
+4. 官网链接 `href="https://sozonext.com"`、`target="_blank"`、`rel="noopener noreferrer"`
+5. 所有 icon SVG 都有 `aria-hidden="true"`
+6. 邮件按钮的 class / inline style 匹配 navy primary CTA pattern（参考 PdfDownloadButton 的测试 pattern）
 
-### Modified
+### 修改
 
-- `tests/api-diagnose.test.ts`: remove F1 send assertions; keep coverage for URL validation, cache hit, diagnose call, DB insert, response shape
+- `tests/api-diagnose.test.ts`：删除 F1 发送断言；保留 URL 校验、缓存命中、diagnose 调用、DB insert、响应 shape 的覆盖
 
 ---
 
-## Documentation updates
+## 文档更新
 
 ### `CLAUDE.md`
 
-- §4 技術スタック table: remove the Resend row
-- §6 v0.4 デルタ #5 (F7 週次サマリー): rewrite to describe the SupportCta surface, or delete if no longer a delta point
-- §10 demo 成功の定義: replace items #4 + #5 with a single new item: `4. 結果ページ最下部に「SOZONEXT サポート」カードが表示され、メール/電話/URL リンクがクリック可能`
-- §11 守る: delete the line about `ALERT_EMAIL_TO` test address
-- §11 やらない: F7 真の定時送信 line can be removed (no longer relevant)
-- §12 演示前 checklist: remove `RESEND_API_KEY` / `ALERT_EMAIL_TO` from the env var list
+- §4 技术栈表：删除 Resend 那一行
+- §6 v0.4 デルタ #5（F7 週次サマリー）：改写描述 SupportCta；或者整条删
+- §10 demo 成功标准：把 #4 + #5 合并替换为：`4. 結果ページ最下部に「SOZONEXT サポート」カードが表示され、メール/電話/URL リンクがクリック可能`
+- §11 守る：删掉关于 `ALERT_EMAIL_TO` 测试地址那一行
+- §11 やらない：F7 真の定時送信 那一行可移除（无意义了）
+- §12 演示前 checklist：从 env var 列表删 `RESEND_API_KEY` / `ALERT_EMAIL_TO`
 
 ### `docs/prd.md`
 
-- Remove F1 (アラートメール) and F7 (週次サマリー) feature sections
-- Add a new feature entry: `F8 SOZONEXT サポート CTA` (with this spec as reference)
-- Update demo flow / acceptance to match CLAUDE.md §10
+- 删除 F1（アラートメール）和 F7（週次サマリー）功能段
+- 新增功能条目 `F8 SOZONEXT サポート CTA`（引用本 spec）
+- 更新 demo flow / 验收标准对齐 CLAUDE.md §10
 
 ### `docs/system-design.md`
 
-- §6 主流程: remove step 6 (F1 send) and the `alerts_sent` insert
-- Remove the email-flow architecture section
-- DB schema diagram: mark `alerts_sent` as deprecated or remove
+- §6 主流程：删步骤 6（F1 发送）和 `alerts_sent` insert
+- 删除邮件流架构段
+- DB schema 图：把 `alerts_sent` 标记 deprecated 或删除
 
 ### `docs/system-design-geo.md`
 
-- No changes expected (GEO doc does not reference email behavior). Verify with grep before closing.
+- 应不受影响（GEO 文档不涉及邮件行为）。关 PR 前先 grep 验证。
 
 ### `docs/adr/`
 
-- Add `ADR-006-remove-f1-f7-emails-for-marketing-cta.md` capturing: context, decision, consequences. Brief — 1 page.
+- 新增 `ADR-006-remove-f1-f7-emails-for-marketing-cta.md`：记录背景、决定、影响。简短，1 页。
 
 ---
 
-## Out of scope (future work)
+## 执行方式
 
-- Analytics: instrument CTA clicks (email/phone/website) once we want conversion tracking
-- A/B test CTA copy variants
-- Multi-language (EN/ZH) CTA variants
-- Homepage hero CTA placement
-- Drop `alerts_sent` table via a real down migration (low value; punt indefinitely)
+- **本 spec 的实施由 Codex 执行**（superpowers 流程）：写一份 implementation plan 后切到 Codex，由它按 plan 落代码、跑测试、出 PR
+- Claude 这边只负责：本 spec + 接下来的 implementation plan + 必要时 review Codex 的 PR
+- 关键约束（per `.claude/rules/never-inline-secrets.md`）：plan / 代码 / commit 文案里**绝对不能出现真实 secret 值**。`RESEND_API_KEY` 等 placeholder 只能用 `<placeholder>` 形式
 
 ---
 
-## Implementation notes
+## 范围外（后续工作）
 
-- **`@react-email/components` removal**: grep for `@react-email/components` outside `lib/email/` before removing from `package.json`. If anything else uses it, keep the dependency.
-- **Vercel env vars**: post-merge, manually remove `RESEND_API_KEY` and `ALERT_EMAIL_TO` from the Vercel project's env settings. Not blocking the merge.
+- 埋点：CTA 点击（邮件 / 电话 / 官网）的转化跟踪 —— 等需要量化的时候再说
+- A/B 测试 CTA 文案变体
+- 多语言（EN / ZH）CTA 变体
+- 首页 hero 区域也放 CTA
+- 真把 `alerts_sent` 表 drop 掉（价值低，无限期推迟）
+
+---
+
+## 实施备忘
+
+- **`@react-email/components` 删除**：从 `package.json` 删之前，grep 一下 `lib/email/` 之外是否还有用到。如果有别的代码用它，保留依赖。
+- **Vercel env vars**：PR merge 后，需要人工到 Vercel 项目设置里删 `RESEND_API_KEY` 和 `ALERT_EMAIL_TO`。不阻塞 merge。

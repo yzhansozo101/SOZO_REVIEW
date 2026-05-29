@@ -38,7 +38,7 @@ export function PdfDownloadButton({ diagnosisId }: Props) {
       </a>
       <style jsx>{`
         .pdf-download-btn:hover {
-          background: var(--ink-50);
+          background: var(--ink-50) !important;
         }
 
         .pdf-download-btn:focus-visible {

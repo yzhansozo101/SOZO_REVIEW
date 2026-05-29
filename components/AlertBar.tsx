@@ -96,7 +96,7 @@ export function AlertBar({ score, alertSent, alertEmailTo, diagnosisId }: Props)
       )}
       <style jsx>{`
         .alert-bar-button:hover {
-          background: var(--ink-50);
+          background: var(--ink-50) !important;
         }
 
         .alert-bar-button:focus-visible {

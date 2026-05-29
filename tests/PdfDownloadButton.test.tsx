@@ -10,6 +10,6 @@ describe("PdfDownloadButton", () => {
     const css = Array.from(container.querySelectorAll("style"))
       .map((s) => s.textContent ?? "")
       .join("\n");
-    expect(css).toMatch(/\.pdf-download-btn:hover[^{]*\{[^}]*background:\s*var\(--ink-50\)/);
+    expect(css).toMatch(/\.pdf-download-btn:hover[^{]*\{[^}]*background:\s*var\(--ink-50\)\s*!important/);
   });
 });

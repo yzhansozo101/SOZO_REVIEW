@@ -23,10 +23,14 @@ describe("AlertBar", () => {
   });
 
   it("buttons declare a hover transition", () => {
-    render(<AlertBar {...baseProps} />);
+    const { container } = render(<AlertBar {...baseProps} />);
     const btn = screen.getAllByRole("button")[0];
     const style = btn.getAttribute("style") ?? "";
+    const css = Array.from(container.querySelectorAll("style"))
+      .map((s) => s.textContent ?? "")
+      .join("\n");
     expect(style).toMatch(/transition:[^;]*background/);
+    expect(css).toMatch(/\.alert-bar-button:hover[^{]*\{[^}]*background:\s*var\(--ink-50\)\s*!important/);
   });
 
   it("renders mock-data marker for the demo schedule line", () => {

@@ -3,7 +3,38 @@ import { QUALITY_STEPS, type QualityStatus } from "@/lib/util/quality";
 
 export function QualityStatusLadder({ current }: { current: QualityStatus }) {
   return (
-    <section style={{ margin: "var(--s-4) 0 0" }}>
+    <section
+      style={{
+        background: "var(--card)",
+        border: "1px solid var(--ink-100)",
+        borderRadius: "var(--r-lg)",
+        padding: "var(--s-5)",
+        display: "grid",
+        gap: "var(--s-3)",
+      }}
+    >
+      <header
+        style={{
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          gap: "var(--s-3)",
+        }}
+      >
+        <span
+          className="t-small"
+          style={{ color: "var(--ink-600)", fontSize: 13 }}
+        >
+          現在: <strong style={{ color: "var(--ink-900)" }}>{ja.result.qualityStatus[current].label}</strong>
+        </span>
+        <span
+          className="t-mono"
+          style={{ color: "var(--ink-400)", fontSize: 11 }}
+        >
+          8 段階
+        </span>
+      </header>
+
       <div
         style={{
           display: "grid",
@@ -18,8 +49,8 @@ export function QualityStatusLadder({ current }: { current: QualityStatus }) {
               key={step}
               title={ja.result.qualityStatus[step].label}
               style={{
-                minHeight: 28,
-                background: active ? "var(--sozonext-navy)" : "var(--ink-100)",
+                minHeight: 32,
+                background: active ? "var(--sozonext-navy)" : "var(--ink-50)",
                 color: active ? "var(--text-on-navy)" : "var(--ink-500)",
                 fontSize: "var(--t-xs)",
                 display: "flex",
@@ -31,6 +62,10 @@ export function QualityStatusLadder({ current }: { current: QualityStatus }) {
                 padding: "0 var(--s-1)",
                 textAlign: "center",
                 overflowWrap: "anywhere",
+                border: active
+                  ? "1px solid var(--sozonext-navy)"
+                  : "1px solid var(--ink-100)",
+                boxShadow: active ? "0 4px 12px -6px rgba(2, 66, 128, 0.45)" : "none",
               }}
             >
               {ja.result.qualityStatus[step].label}
@@ -38,11 +73,10 @@ export function QualityStatusLadder({ current }: { current: QualityStatus }) {
           );
         })}
       </div>
-      <div className="t-small" style={{ marginTop: "var(--s-2)", color: "var(--ink-700)" }}>
-        現在: <strong>{ja.result.qualityStatus[current].label}</strong> -{" "}
+      <div className="t-small" style={{ color: "var(--ink-600)", margin: 0, fontSize: 13 }}>
         {ja.result.qualityStatus[current].desc}
       </div>
-      <div className="t-caption" style={{ marginTop: "var(--s-1)" }}>
+      <div className="t-caption" style={{ color: "var(--ink-400)" }}>
         {ja.result.qualityStatus.reference}
       </div>
     </section>

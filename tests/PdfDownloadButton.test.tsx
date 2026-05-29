@@ -10,6 +10,8 @@ describe("PdfDownloadButton", () => {
     const css = Array.from(container.querySelectorAll("style"))
       .map((s) => s.textContent ?? "")
       .join("\n");
-    expect(css).toMatch(/\.pdf-download-btn:hover[^{]*\{[^}]*background:\s*var\(--ink-50\)\s*!important/);
+    // PDF download is rendered as the primary CTA in the report header, so its
+    // hover swaps to the deeper navy token rather than the ghost-button ink-50.
+    expect(css).toMatch(/\.pdf-download-btn:hover[^{]*\{[^}]*background:\s*var\(--sozonext-navy-700\)\s*!important/);
   });
 });

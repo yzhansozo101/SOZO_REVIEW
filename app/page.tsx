@@ -20,8 +20,10 @@ export default function Home() {
     <>
       <StructuredData graph={homepageGraph()} />
       <main>
-        <Hero />
-        <DiagnosticForm />
+        <section className="brand-halo">
+          <Hero />
+          <DiagnosticForm />
+        </section>
         <HowItWorks />
         <AboutSozonext />
         <MultilingualBrandSnippets />

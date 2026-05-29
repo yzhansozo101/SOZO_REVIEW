@@ -27,3 +27,4 @@ mac-scraper/.env
 
 # pnpm local store (created when global store isn't writable, e.g. sandbox runs)
 .pnpm-store/
+.vercel

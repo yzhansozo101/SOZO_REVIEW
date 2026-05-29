@@ -8,9 +8,7 @@ import { ProgressView } from "./ProgressView";
 
 type ErrorKey = keyof typeof ja.form.errors;
 
-// TODO(demo): swap to a real, stable Airbnb listing URL the boss can demo with.
-// Numeric ID is a placeholder — won't return a valid result until replaced.
-const SAMPLE_URL = "https://www.airbnb.jp/rooms/12345678";
+const SAMPLE_URL = "https://www.airbnb.jp/rooms/1236886450867131927";
 
 const fieldBase = {
   flex: 1,

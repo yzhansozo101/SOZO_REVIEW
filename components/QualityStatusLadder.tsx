@@ -20,7 +20,7 @@ export function QualityStatusLadder({ current }: { current: QualityStatus }) {
               style={{
                 minHeight: 28,
                 background: active ? "var(--sozonext-navy)" : "var(--ink-100)",
-                color: active ? "#fff" : "var(--ink-500)",
+                color: active ? "var(--text-on-navy)" : "var(--ink-500)",
                 fontSize: "var(--t-xs)",
                 display: "flex",
                 alignItems: "center",

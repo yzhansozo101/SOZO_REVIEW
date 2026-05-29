@@ -36,7 +36,7 @@ export function DimensionGrid({ dimensions }: Props) {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "10px",
+          gap: "var(--s-3)",
         }}
       >
         <DimensionCard

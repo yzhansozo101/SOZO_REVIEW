@@ -1,0 +1,117 @@
+name: Sync Vercel Stable Alias
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: "Optional commit SHA to sync. Defaults to the workflow commit."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: Point stable alias at latest main deployment
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PROJECT_NAME: sozonext-review
+      TARGET_ALIAS: sozonext-review.vercel.app
+      VERCEL_SCOPE: yzhansozo101s-projects
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      COMMIT_SHA: ${{ inputs.commit_sha || github.sha }}
+
+    steps:
+      - name: Validate Vercel token
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Missing GitHub Actions secret VERCEL_TOKEN"
+            exit 1
+          fi
+
+      - name: Wait for production deployment
+        id: deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for attempt in $(seq 1 60); do
+            deployments_file="$(mktemp)"
+
+            npx --yes vercel@54.6.1 list "$PROJECT_NAME" \
+              --environment production \
+              --status READY \
+              --format json \
+              --meta githubCommitSha="$COMMIT_SHA" \
+              --scope "$VERCEL_SCOPE" \
+              --token "$VERCEL_TOKEN" > "$deployments_file"
+
+            deployment_host="$(
+              node -e '
+                const fs = require("node:fs");
+                const [file, commitSha] = process.argv.slice(1);
+                const data = JSON.parse(fs.readFileSync(file, "utf8"));
+                const deployments = data.deployments || [];
+                const match = deployments
+                  .filter((deployment) =>
+                    deployment.url &&
+                    deployment.state === "READY" &&
+                    deployment.target === "production" &&
+                    deployment.meta?.githubCommitRef === "main" &&
+                    deployment.meta?.githubCommitSha === commitSha
+                  )
+                  .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))[0];
+
+                if (match) {
+                  process.stdout.write(match.url);
+                }
+              ' "$deployments_file" "$COMMIT_SHA"
+            )"
+
+            rm -f "$deployments_file"
+
+            if [ -n "$deployment_host" ]; then
+              echo "deployment_url=https://$deployment_host" >> "$GITHUB_OUTPUT"
+              echo "deployment_host=$deployment_host" >> "$GITHUB_OUTPUT"
+              echo "Found ready production deployment for $COMMIT_SHA: https://$deployment_host"
+              exit 0
+            fi
+
+            echo "Waiting for Vercel production deployment for $COMMIT_SHA (attempt $attempt/60)"
+            sleep 10
+          done
+
+          echo "::error::Timed out waiting for a ready production deployment for $COMMIT_SHA"
+          exit 1
+
+      - name: Assign stable alias
+        run: |
+          npx --yes vercel@54.6.1 alias set \
+            "${{ steps.deployment.outputs.deployment_url }}" \
+            "$TARGET_ALIAS" \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN"
+
+      - name: Verify stable alias
+        run: |
+          set -euo pipefail
+
+          inspect_file="$(mktemp)"
+          npx --yes vercel@54.6.1 inspect "https://$TARGET_ALIAS" \
+            --scope "$VERCEL_SCOPE" \
+            --token "$VERCEL_TOKEN" > "$inspect_file"
+
+          if ! grep -F "${{ steps.deployment.outputs.deployment_host }}" "$inspect_file" >/dev/null; then
+            echo "::error::$TARGET_ALIAS does not point at ${{ steps.deployment.outputs.deployment_host }}"
+            cat "$inspect_file"
+            rm -f "$inspect_file"
+            exit 1
+          fi
+
+          rm -f "$inspect_file"
+          echo "$TARGET_ALIAS points at ${{ steps.deployment.outputs.deployment_host }}"

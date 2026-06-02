@@ -14,6 +14,7 @@
 | [ADR-003](0003-claude-agent-sdk.md) | AI 走本地 Claude Agent SDK，不用 Anthropic API key | Accepted |
 | [ADR-004](0004-synchronous-flow.md) | 同步诊断流，不用作业队列 | Accepted |
 | [ADR-005](0005-single-tool-use.md) | 单次 Claude `tool_use` 输出三份产物 | Accepted |
+| [ADR-006](0006-remove-notification-emails.md) | 撤销 F1/F7 通知邮件，改用 SupportCta 营销 CTA | Accepted |
 
 ## 待来日重审的决策
 
@@ -24,8 +25,6 @@
 | Drizzle vs Prisma | 团队扩大、有人主推 Prisma |
 | JSONB `dimensions` | 需要按维度做 SQL 聚合查询 |
 | C1 mock 数据 | 真实历史评分数据可获得 |
-| F7 无定时器 | 用户要求真正的"每周一自动发"|
-| Resend | 月邮件量 > 3000，或要发到 SOZONEXT 真实运营邮箱 |
 | 不用 Sentry | 生产用户量 > 10 |
 
 ## 新增 ADR 的步骤

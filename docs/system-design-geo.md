@@ -71,7 +71,7 @@
 │  app/layout.tsx：metadataBase + 公共 OG/canonical/robots + verification (已有) │
 └────────────────────────────────────────────────────────────────────────────────┘
 
-DB / Mac scraper / Resend / @react-pdf — 不动 ❌
+DB / Mac scraper / @react-pdf — 不动 ❌
 ```
 
 ### 模块清单

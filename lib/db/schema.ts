@@ -39,12 +39,10 @@ export const diagnoses = pgTable(
   })
 );
 
-export const alertsSent = pgTable("alerts_sent", {
-  diagnosisId: uuid("diagnosis_id").primaryKey().references(() => diagnoses.id),
-  emailTo: text("email_to").notNull(),
-  sentAt: timestamp("sent_at", { withTimezone: true }).notNull().defaultNow(),
-  resendId: text("resend_id"),
-});
+// alertsSent table dropped from schema export 2026-05-29 (notification
+// system removed in favor of SupportCta marketing card). The
+// `alerts_sent` table still exists in Neon as dead schema; revisit if
+// space pressure ever matters.
 
 export type Listing = typeof listings.$inferSelect;
 export type DiagnosisRow = typeof diagnoses.$inferSelect;

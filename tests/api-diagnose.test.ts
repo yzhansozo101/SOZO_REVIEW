@@ -6,9 +6,6 @@ const mocks = vi.hoisted(() => ({
   listingOnConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
   diagnosisValues: vi.fn(),
   diagnosisReturning: vi.fn().mockResolvedValue([{ id: "00000000-0000-0000-0000-000000000001" }]),
-  alertValues: vi.fn(),
-  alertOnConflictDoNothing: vi.fn().mockResolvedValue(undefined),
-  sendEmail: vi.fn(),
 }));
 
 vi.mock("@/lib/scraper/client", () => ({
@@ -17,7 +14,6 @@ vi.mock("@/lib/scraper/client", () => ({
 vi.mock("@/lib/db/client", () => {
   mocks.listingValues.mockReturnValue({ onConflictDoUpdate: mocks.listingOnConflictDoUpdate });
   mocks.diagnosisValues.mockReturnValue({ returning: mocks.diagnosisReturning });
-  mocks.alertValues.mockReturnValue({ onConflictDoNothing: mocks.alertOnConflictDoNothing });
 
   const insert = vi.fn().mockImplementation((table) => {
     const nameSymbol = Object.getOwnPropertySymbols(table).find(
@@ -27,19 +23,12 @@ vi.mock("@/lib/db/client", () => {
     if (tableName === "listings") {
       return { values: mocks.listingValues };
     }
-    if (tableName === "alerts_sent") {
-      return { values: mocks.alertValues };
-    }
     return { values: mocks.diagnosisValues };
   });
   return { db: { insert }, schema: {} };
 });
-vi.mock("@/lib/email/resend", () => ({
-  sendEmail: mocks.sendEmail,
-}));
 
 import { fetchDiagnosis } from "@/lib/scraper/client";
-import { sendEmail } from "@/lib/email/resend";
 import { POST } from "@/app/api/diagnose/route";
 import type { Diagnosis } from "@/lib/types/diagnosis";
 
@@ -75,10 +64,6 @@ beforeEach(() => {
   mocks.listingOnConflictDoUpdate.mockClear();
   mocks.diagnosisValues.mockClear();
   mocks.diagnosisReturning.mockClear();
-  mocks.alertValues.mockClear();
-  mocks.alertOnConflictDoNothing.mockClear();
-  vi.mocked(sendEmail).mockReset();
-  vi.mocked(sendEmail).mockResolvedValue({ ok: true, id: "resend_123", dev: false });
 });
 
 describe("POST /api/diagnose", () => {
@@ -107,52 +92,5 @@ describe("POST /api/diagnose", () => {
     const body = await res.json();
     expect(body.diagnosis_id).toBe("00000000-0000-0000-0000-000000000001");
     expect(body.redirect).toBe("/d/00000000-0000-0000-0000-000000000001");
-  });
-
-  it("sends an F1 alert and records it when overall_score is below 60", async () => {
-    const lowScore = {
-      ...sample,
-      overall_score: 55,
-      grade: "D" as const,
-      ai: {
-        ...sample.ai,
-        top3: [{ issue: "写真が少ない", action: "リビング写真を追加", impact: "予約率改善" }],
-      },
-    };
-    vi.mocked(fetchDiagnosis).mockResolvedValue({ ok: true, data: lowScore });
-
-    const res = await POST(mkReq({ url: "https://www.airbnb.jp/rooms/9999" }));
-
-    expect(res.status).toBe(200);
-    expect(sendEmail).toHaveBeenCalledWith(
-      expect.objectContaining({
-        to: "alerts@example.com",
-        subject: "⚠️ 物件アラート · Test · 評価 55",
-        html: expect.stringContaining("リビング写真を追加"),
-        tags: [{ name: "diagnosis_id", value: "00000000-0000-0000-0000-000000000001" }],
-      })
-    );
-    expect(mocks.alertValues).toHaveBeenCalledWith({
-      diagnosisId: "00000000-0000-0000-0000-000000000001",
-      emailTo: "alerts@example.com",
-      resendId: "resend_123",
-    });
-    expect(mocks.alertOnConflictDoNothing).toHaveBeenCalled();
-  });
-
-  it("still returns the diagnosis response when F1 alert sending throws", async () => {
-    vi.spyOn(console, "error").mockImplementation(() => undefined);
-    vi.mocked(sendEmail).mockRejectedValue(new Error("email down"));
-    vi.mocked(fetchDiagnosis).mockResolvedValue({
-      ok: true,
-      data: { ...sample, overall_score: 55, grade: "D" },
-    });
-
-    const res = await POST(mkReq({ url: "https://www.airbnb.jp/rooms/9999" }));
-    const body = await res.json();
-
-    expect(res.status).toBe(200);
-    expect(body.redirect).toBe("/d/00000000-0000-0000-0000-000000000001");
-    expect(mocks.alertValues).not.toHaveBeenCalled();
   });
 });

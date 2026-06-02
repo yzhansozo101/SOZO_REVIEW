@@ -608,3 +608,28 @@ pre.t-code, pre code {
     transform: none !important;
   }
 }
+
+/* SupportCta — server-component CTA needs hover/focus rules in globals
+   since it can't use <style jsx>. Mirrors the navy primary CTA pattern
+   from PdfDownloadButton. */
+.support-cta-email {
+  /* base styles are inline; this class only owns interactive states */
+}
+.support-cta-email:hover {
+  background: var(--sozonext-navy-700) !important;
+  transform: translateY(-1px);
+}
+.support-cta-email:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus), 0 6px 16px -8px rgba(2, 66, 128, 0.55);
+}
+
+.support-cta-link:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--r-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-cta-email:hover { transform: none; }
+}

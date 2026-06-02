@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { render } from "@react-email/components";
 import { z } from "zod";
 import { db } from "@/lib/db/client";
-import { alertsSent, listings, diagnoses } from "@/lib/db/schema";
-import { F1AlertEmail } from "@/lib/email/alert";
-import { sendEmail } from "@/lib/email/resend";
+import { listings, diagnoses } from "@/lib/db/schema";
 import { fetchDiagnosis } from "@/lib/scraper/client";
 import { parseAirbnbUrl } from "@/lib/util/url";
 
@@ -64,39 +61,6 @@ export async function POST(req: NextRequest) {
     .returning({ id: diagnoses.id });
 
   const id = inserted[0].id;
-  if (d.overall_score < 60) {
-    try {
-      const alertEmailTo = process.env.ALERT_EMAIL_TO ?? "alerts@example.com";
-      const html = await render(
-        F1AlertEmail({
-          listingTitle: d.title,
-          score: d.overall_score,
-          grade: d.grade,
-          reportUrl: `${req.nextUrl.origin}/d/${id}`,
-          top3: d.ai.top3,
-        })
-      );
-      const result = await sendEmail({
-        to: alertEmailTo,
-        subject: `⚠️ 物件アラート · ${d.title} · 評価 ${d.overall_score}`,
-        html,
-        tags: [{ name: "diagnosis_id", value: id }],
-      });
-
-      if (result.ok) {
-        await db
-          .insert(alertsSent)
-          .values({
-            diagnosisId: id,
-            emailTo: alertEmailTo,
-            resendId: result.id,
-          })
-          .onConflictDoNothing();
-      }
-    } catch (e) {
-      console.error("F1 alert send failed:", e);
-    }
-  }
 
   return NextResponse.json({ diagnosis_id: id, redirect: `/d/${id}` });
 }

@@ -294,11 +294,6 @@ export default async function ResultPage({ params }: Params) {
               <SectionLabel n="04" title="評価推移" />
               <TrendChart current={d.overallScore} />
             </section>
-
-            <section style={{ display: "grid", gap: "var(--s-3)" }}>
-              <SectionLabel n="05" title="サポート" />
-              <SupportCta />
-            </section>
           </div>
           <div className="result-report" style={{ minWidth: 0 }}>
             <AIReport
@@ -312,6 +307,18 @@ export default async function ResultPage({ params }: Params) {
             />
           </div>
         </div>
+
+        {/* Marketing CTA — pinned at the absolute bottom on both desktop and mobile */}
+        <section
+          style={{
+            display: "grid",
+            gap: "var(--s-3)",
+            marginTop: "var(--s-7)",
+          }}
+        >
+          <SectionLabel n="05" title="サポート" />
+          <SupportCta />
+        </section>
       </div>
 
       <style>{`

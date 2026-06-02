@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { and, desc, eq, ne } from "drizzle-orm";
 import { db, schema } from "@/lib/db/client";
 import { AIReport } from "@/components/AIReport";
-import { AlertBar } from "@/components/AlertBar";
+import { SupportCta } from "@/components/SupportCta";
 import { DiffArrow } from "@/components/DiffArrow";
 import { DimensionGrid } from "@/components/DimensionGrid";
 import { PdfDownloadButton } from "@/components/PdfDownloadButton";
@@ -107,13 +107,6 @@ export default async function ResultPage({ params }: Params) {
     .where(eq(schema.listings.id, d.listingId))
     .limit(1);
   const listing = listingRows[0];
-
-  const alertRows = await db
-    .select()
-    .from(schema.alertsSent)
-    .where(eq(schema.alertsSent.diagnosisId, id))
-    .limit(1);
-  const alert = alertRows[0];
 
   const createdAt = d.createdAt instanceof Date ? d.createdAt : d.createdAt ? new Date(d.createdAt as unknown as string) : null;
 
@@ -303,13 +296,8 @@ export default async function ResultPage({ params }: Params) {
             </section>
 
             <section style={{ display: "grid", gap: "var(--s-3)" }}>
-              <SectionLabel n="05" title="通知" />
-              <AlertBar
-                score={d.overallScore}
-                alertSent={!!alert}
-                alertEmailTo={alert?.emailTo ?? process.env.ALERT_EMAIL_TO ?? "(未設定)"}
-                diagnosisId={id}
-              />
+              <SectionLabel n="05" title="サポート" />
+              <SupportCta />
             </section>
           </div>
           <div className="result-report" style={{ minWidth: 0 }}>

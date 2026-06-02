@@ -10,7 +10,7 @@
 AI 需要产出三份内容：
 1. 日语 markdown 报告（E）
 2. B12 高频负面关键词数组
-3. Top 3 改善案数组（F1 邮件需要）
+3. Top 3 改善案数组（结果页 Top3Priorities 组件使用；原文档曾提到 F1 邮件用途，该邮件已废止 — 见 [ADR-006](0006-remove-notification-emails.md)）
 
 可以一次结构化输出 / 分多次调用。
 

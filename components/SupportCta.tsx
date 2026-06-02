@@ -241,7 +241,6 @@ export function SupportCta() {
       />
 
       <div
-        className="support-cta-contact"
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -251,6 +250,7 @@ export function SupportCta() {
         }}
       >
         <a
+          className="support-cta-email"
           href={MAILTO_HREF}
           style={{
             display: "inline-flex",
@@ -284,6 +284,7 @@ export function SupportCta() {
           }}
         >
           <a
+            className="support-cta-link"
             href={PHONE_TEL}
             style={{
               display: "inline-flex",
@@ -299,6 +300,7 @@ export function SupportCta() {
             {PHONE_DISPLAY}
           </a>
           <a
+            className="support-cta-link"
             href={WEBSITE}
             target="_blank"
             rel="noopener noreferrer"
